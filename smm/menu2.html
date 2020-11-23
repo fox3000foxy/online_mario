@@ -1,0 +1,95 @@
+<html>
+<head>
+<style>
+.iframe
+{
+position:absolute;
+/* top:8%; */
+width:100%;
+/*height:92%;*/
+top:0;
+height:100%;
+left:0px;
+}
+
+#menubar
+{
+position:absolute;
+top:0px;
+left:0px;
+width:100%;
+height:8%;
+text-align:center;
+}
+
+vtd
+{
+border: 3px solid black;
+}
+
+@font-face {
+   font-family: 'SMB';
+   src: local('Super Mario Bros.'),
+        url('Content/fonts/Super Mario Bros.ttf') format('truetype');
+   font-style: normal;
+}
+
+.clap
+{
+border: 3px solid gray;
+background-color:black;
+color:white;
+font-family: 'SMB';
+padding:15px 5px;
+width:55px;
+text-align:center;
+position:absolute;
+right:5%;
+bottom:10%;
+z-index:8000;
+}
+</style>
+<script>
+function action1()
+{
+document.getElementById("1").style.visibility = "visible"
+document.getElementById("2").style.visibility = "hidden"
+document.getElementById("3").style.visibility = "hidden"
+document.getElementById("4").style.visibility = "hidden"
+document.getElementById("5").style.visibility = "visible"
+editortoplay()
+localStorage.setItem("editorfinish",false)
+document.getElementById("1").focus()
+}
+
+//playtoeditor
+setInterval("if(localStorage.getItem('editorfinish')=='true'){action2()}",50)
+
+function action2()
+{
+document.getElementById("1").style.visibility = "hidden"
+document.getElementById("2").style.visibility = "visible"
+document.getElementById("3").style.visibility = "hidden"
+document.getElementById("4").style.visibility = "visible"
+document.getElementById("5").style.visibility = "hidden"
+}
+function action3()
+{
+document.getElementById("1").style.visibility = "hidden"
+document.getElementById("2").style.visibility = "hidden"
+document.getElementById("3").style.visibility = "visible"
+}
+
+function editortoplay(){document.getElementById("1").src = "menu.html?editor=3&lives=999&coins=0"}
+</script>
+</head>
+<body>
+<div class="clap" onclick="action1()" id="4">Play</div>
+<div class="clap" onclick="action2()" id="5">Editor</div>
+<!--<td onclick="action3()">Convert</td>-->
+<iframe frameborder=0 class="iframe" id="1" src="menu.html?editor=1"></iframe>
+<iframe frameborder=0 class="iframe" id="2" src="tilemaker.html"></iframe>
+<iframe frameborder=0 class="iframe" id="3" src="convert.html"></iframe>
+</body>
+<script>action2()</script>
+</html>

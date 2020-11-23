@@ -1,0 +1,33 @@
+Fermez cet Onglet
+<script>
+newwindow = window.open("about:blank", "awindow","height="+screen.availHeight+",width="+screen.availWidth+",toolbar=0,menubar=0,scrollbars=0,resizable=0,status=0,location=0")
+newwindow.document.write('<iframe frameborder=0 src="index.html" style="position:absolute;z-index:0;top:10%;left:20%;width:60%;height:80%"><\/iframe>')
+newwindow.document.write('<div style="background:black;position:absolute;z-index:1;top:0;left:0;width:20%;height:100%"><\/div>')
+newwindow.document.write('<div style="background:black;position:absolute;z-index:1;top:0;left:80%;width:20%;height:100%"><\/div>')
+newwindow.document.write('<div style="background:black;position:absolute;z-index:1;top:0;left:0;width:100%;height:10%;color:red;text-align:center;font-size:200%;padding:0px 3%">Mario Maker<\/div>')
+newwindow.document.write('<div style="background:black;position:absolute;z-index:1;top:90%;left:0;width:100%;height:10%"><\/div>')
+
+
+// ARROWS
+/*newwindow.document.write('<div id="buttonscontrol" style="position:absolute;z-index:3;top:0;left:0">')
+newwindow.document.write('<button class="controls" id="leftbutton" style="left:10%;top:90%;z-index:2000" onclick="leftpush()"> < <\/button>')
+newwindow.document.write('<button class="controls" id="upbutton" style="left:20%;top:80%;z-index:2000" onclick="uppush()"> ^ <\/button>')
+newwindow.document.write('<button class="controls" id="rightbutton" style="left:30%;top:90%;z-index:2000" onclick="rightpush()"> > <\/button>')
+newwindow.document.write('<button class="controls" id="downbutton" style="left:20%;top:90%;z-index:2000" onclick="downpush()"> v <\/button>')
+newwindow.document.write('<button class="controls" id="speedbutton" style="left:50%;top:90%;z-index:2000" onclick="speedpush()"> >> <\/button>')
+newwindow.document.write('<\/div>')
+*/
+//newwindow.document.write('<link rel="stylesheet" href="Content\/style.css">')
+//newwindow.document.write('<script src="Scripts\/keys.js"><\/script>')
+//newwindow.document.write('<script src="Scripts\/main.js"><\/script>')
+//newwindow.document.write('<script src="Scripts\/constants.js"><\/script>')
+//newwindow.document.write('<script src="Scripts\/mobile.js"><\/script>')
+
+function getBodyPopup()
+{
+for (i=0;i<newwindow.document.body.childNodes.length;i++){console.log(newwindow.document.body.childNodes[i])}
+//console.log(newwindow.document.body.childNodes[7].childNodes)
+}
+setTimeout('getBodyPopup()',3000)
+window.close()
+</script>

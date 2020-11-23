@@ -1,0 +1,37 @@
+<html>
+<body>
+<script>
+function convertlevel()
+{
+document.write("<br><br>")
+var code = prompt("Paste your level code here :","")
+document.write("<script>jsontable = new Array();jsontable = "+code+"<\/script>")
+//document.write("here")
+//try{alert(jsontable[1][3])}catch(e){alert(e)}
+newtable = new Array()
+result = "["
+for(i=0;i<jsontable[0].length;i++)
+{
+				result += "["
+				newtable[i] = new Array()
+				for (j=0;j<jsontable.length;j++)
+				{
+								//console.log(i+","+j)
+								//alert(jsontable[j][i])
+								newtable[i][j] = jsontable[j][i]
+//								newtable2[i][j] = newtable[j][i]
+//								newtable3[i][j] = newtable2[j][i]
+//				      result += "'"+newtable3[i][j]+"',"
+				      result += "'"+newtable[i][j]+"',"
+				}
+				//document.write(newtable)
+				result += "],"+unescape("%0D%0A")
+}
+result+= "]|1"
+document.write(result)
+document.write('<br><br><button onclick="convertlevel()">Convert<\/button>')
+}
+</script>
+<button onclick="convertlevel()">Convert</button>
+</body>
+</html>

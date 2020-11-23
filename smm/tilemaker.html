@@ -1,0 +1,283 @@
+<html>
+<body>
+<img id="levelbg" src="Content\\backgrounds\\01.png" style='visibility:hidden;position:absolute; left:0; top:0px;'>
+<canvas id='myCanvas' onmouseup="clicked=0" onmousedown="clicked=1" style='position:absolute;top:0; left:0;z-index:2'></canvas>
+<label id='result' style='position:absolute; left:0;font-size:0.1%; top:725;color: white;'>Click on the image at the bottom to select a tile, then click on the grid to draw.</label>
+<label id='resultat' style='position:absolute; left:0;visibility:hidden;'>Click on the image at the bottom to select a tile, then click on the grid to draw.</label>
+<div id="backgrounds" style="visibility:hidden;">
+<img src="Content\\backgrounds\\01.png" id="01" onclick="background(1,this.src)" style="position:absolute;height:5%;width:6%;top:8%">
+<img src="Content\\backgrounds\\02.png" id="02" onclick="background(2,this.src)" style="position:absolute;height:5%;width:6%;top:12%">
+<img src="Content\\backgrounds\\03.png" id="03" onclick="background(3,this.src)" style="position:absolute;height:5%;width:6%;top:16%">
+<img src="Content\\backgrounds\\04.png" id="04" onclick="background(4,this.src)" style="position:absolute;height:5%;width:6%;top:20%">
+<img src="Content\\backgrounds\\05.png" id="05" onclick="background(5,this.src)" style="position:absolute;height:5%;width:6%;top:24%">
+<img src="Content\\backgrounds\\06.png" id="06" onclick="background(6,this.src)" style="position:absolute;height:5%;width:6%;top:28%">
+<img src="Content\\backgrounds\\07.png" id="07" onclick="background(7,this.src)" style="position:absolute;height:5%;width:6%;top:32%">
+<img src="Content\\backgrounds\\08.png" id="08" onclick="background(8,this.src)" style="position:absolute;height:5%;width:6%;top:36%">
+</div>
+<div>
+<script>
+function background(p,q){
+backgroundlv = p
+document.getElementById("levelbg").src = q 
+convert()
+}
+
+let image = new Image();
+backgroundlv=1
+image.src = 'tiles.png';
+const tileWidth = 24,
+  tileHeight = 24;
+  const sourceWidth = tileWidth*7,
+  sourceHeight = tileHeight*7;
+  document.getElementById("myCanvas").top = 0
+//   alert(confirm("Have you already level code ?"))
+  have=confirm("Have you already level code ?")
+  if (have==true) {
+    so = prompt("Code of level :","")
+	//bg = so.split("|")[1].split("{")[0]
+	//background(parseInt(bg),"Content\\backgrounds\\0"+bg+".png")
+    ha = new Function("so="+so.split("|")[0])
+    ha()
+  }
+   mapColumns = have==true?so[0].length:prompt("Width : ","25");
+   mapRows = have==true?so.length:prompt("Height : ","10");
+   let tiles = new Array(mapColumns * mapRows);
+let mapHeight = mapRows * tileHeight;
+space = (mapHeight + 175)
+document.getElementById("resultat").style.top = space+"px"
+let mapWidth = mapColumns * tileWidth;
+document.getElementById("levelbg").style.width = mapWidth
+document.getElementById("levelbg").style.height = mapHeight
+document.getElementById("levelbg").style.visibility = "visible"
+document.getElementById("resultat").style.visibility = "visible"
+document.getElementById("backgrounds").style.visibility = "visible"
+document.getElementById("01").style.left = mapWidth + 50
+document.getElementById("02").style.left = mapWidth + 50
+document.getElementById("03").style.left = mapWidth + 50
+document.getElementById("04").style.left = mapWidth + 50
+document.getElementById("05").style.left = mapWidth + 50
+document.getElementById("06").style.left = mapWidth + 50
+document.getElementById("07").style.left = mapWidth + 50
+document.getElementById("08").style.left = mapWidth + 50
+document.getElementById("myCanvas").height = sourceHeight+mapHeight
+document.getElementById("myCanvas").width = mapWidth<sourceWidth?sourceWidth:mapWidth
+// setInterval('document.getElementById("myCanvas").style.top = (window.outerHeight-mapHeight)/100+"%"
+let sourceX, sourceY, sourceTile;
+let canvas = document.getElementById('myCanvas');
+let context = canvas.getContext('2d');
+canvas.addEventListener('click', doMouseClick);
+canvas.addEventListener('mouseup', fillok);
+canvas.addEventListener('mousedown', infill);
+
+function infill() {canvas.addEventListener('mousemove', doMouseClick);}
+function fillok() {canvas.removeEventListener('mousemove', doMouseClick)}
+
+canvas.addEventListener('mousemove', doMouseMove);
+image.addEventListener('load', redrawSource);
+ redrawSource()
+
+ for(i=0;i<tiles.length;i++)
+ {
+ if (tiles[i]==undefined) tiles[i]=''
+ }
+ 
+ function convert()
+{
+	 var debut = "Code for SMW HTML : "+unescape("%0D%0A")+"<form name='code' ><textarea name='code' style='width:500px;height:225px'>"
+    var resultat = "["//+unescape("%0D%0A")
+    compteur = 0
+	 for (i=0;i<mapRows;i++)
+	 {
+	 	resultat += "["
+	 	for (j=0;j<mapColumns;j++)
+	 	{
+            gg= tiles[compteur].indexOf?tiles[compteur]:toid(tiles[compteur])
+	 		resultat += "'"+gg+"',"
+			if (tiles.indexOf("finish")!=-1||tiles.indexOf(41)!=-1)
+				{
+					if(gg=="finish")
+					{
+					x = j*32
+					y = (mapRows - i - 1)*32
+					//alert(x+","+y)
+					}
+				}
+			else
+			{
+			x = (mapColumns-4) * 32
+			y = 32
+			}
+			//compteur += mapColumns
+			compteur++
+            if (tiles[compteur]==undefined){break}
+	 	}
+	 	resultat += "],"
+	 }
+		resultat += "]"
+         fin = "</textarea><br><iframe src='downloadcode.html' frameborder=0></form>"
+	 	document.getElementById('resultat').innerHTML = debut+resultat+"|"+backgroundlv+"&{x:"+x+"-y:"+y+"}"+fin
+	 	document.cookie = "kb="+document.cookie.split("kb=")[1].split(";")[0]+";"
+ 	 	localStorage.setItem("level",document.code.code.value)
+}
+
+function redrawSource() {
+  context.drawImage(image, 0, 0, sourceWidth, sourceHeight, 0, mapHeight, sourceWidth, sourceHeight);
+}
+ 
+function doMouseClick(e) {
+  //clicked=1
+  let x = e.pageX;
+  let y = e.pageY;
+  let gridX = Math.floor(x / tileWidth) * tileWidth;
+  let gridY = Math.floor(y / tileHeight) * tileHeight;
+ 
+  if (y > mapHeight && y < (mapHeight + sourceHeight) && x < sourceWidth) { // source
+    let tileX = Math.floor(x / tileWidth);
+    let tileY = Math.floor((y - mapHeight) / tileHeight);
+    sourceTile = tileY * (sourceWidth / tileWidth) + tileX;
+    
+    sourceX = gridX;
+    sourceY = gridY - mapHeight;
+    redrawSource();
+    drawBox();
+  }
+ 
+  if (y < mapHeight && x < mapWidth) { // target
+    context.clearRect(gridX, gridY, tileWidth, tileHeight);
+    context.drawImage(image, sourceX, sourceY, tileWidth, tileHeight, gridX, gridY, tileWidth, tileHeight);
+    let tileX = Math.floor(x / tileWidth);
+    let tileY = Math.floor(y / tileHeight);
+    let targetTile = tileY * mapColumns + tileX;
+    tiles[targetTile] = sourceTile;
+    //if (targetTile == 41) {document.write('<img src="Content\/mario-finish.gif" style="position:absolute;top:'+tileY*tileHeight+';left:'+tileY*tileHeight+'">')}
+    // update the string    
+    let string = '[';
+    for (let i = 0; i < mapColumns*mapRows; i++) {
+    			//	for (let j = 0; j < mapRows; j++) {
+      if (tiles[i] != undefined) string = string + tiles[i];
+      string = string + ',';
+    }//}
+    
+    string = string + '];';
+    document.getElementById('result').innerHTML = string;
+    convert()
+  }
+}
+ 
+function doMouseMove(e) {
+  let x = e.pageX;
+  let y = e.pageY;
+ 
+  if (y > mapHeight && y < (mapHeight + sourceHeight) && x < sourceWidth) { // source
+    let gridX = Math.floor(x / tileWidth) * tileWidth;
+    let gridY = Math.floor(y / tileHeight) * tileHeight;
+    context.clearRect(0, mapHeight, sourceWidth, sourceHeight);
+    redrawSource();
+    context.beginPath();
+    context.strokeStyle = 'blue';
+    context.rect(gridX, gridY, tileWidth, tileHeight);
+    context.stroke();
+    drawBox();
+  }
+}
+ 
+function drawBox() {
+  context.beginPath();
+  context.strokeStyle = 'red';
+//   context.rect(sourceX, 0, tileWidth, tileHeight);
+  context.rect(sourceX, sourceY + mapHeight, tileWidth, tileHeight);
+
+  context.stroke();
+}
+ 
+function toid(p)
+{
+				tileid = ""
+				//alert(JSON.stringify(tiles[p]))
+				tileid = p==0?'ballmonster':tileid
+				tileid = p==1?'box':tileid
+				tileid = p==2?'brown_block':tileid
+				tileid = p==3?'bush_left':tileid
+				tileid = p==4?'bush_middle_left':tileid
+				tileid = p==5?'bush_middle':tileid
+				tileid = p==6?'bush_middle_right':tileid
+				tileid = p==7?'bush_right':tileid
+				tileid = p==8?'coin':tileid
+				tileid = p==9?'coinbox':tileid
+				tileid = p==10?'grass_left':tileid
+				tileid = p==11?'grass_right':tileid
+				tileid = p==12?'grass_top_left_rounded':tileid
+				tileid = p==13?'grass_top_left':tileid
+				tileid = p==14?'grass_top_right_rounded':tileid
+				tileid = p==15?'grass_top_right':tileid
+				tileid = p==16?'grass_top':tileid
+				tileid = p==17?'greenturtle':tileid
+				tileid = p==18?'mario':tileid
+				tileid = p==19?'multiple_coinbox':tileid
+				tileid = p==20?'mushroombox':tileid
+				tileid = p==21?'pipe_left_grass':tileid
+				tileid = p==22?'pipe_left':tileid
+				tileid = p==23?'pipe_right_grass':tileid
+				tileid = p==24?'pipe_right_soil':tileid
+				tileid = p==25?'pipe_left_soil':tileid
+				tileid = p==26?'pipe_right':tileid
+				tileid = p==27?'pipe_top_left':tileid
+				tileid = p==28?'pipe_top_right':tileid
+				tileid = p==29?'pipeplant':tileid
+				tileid = p==30?'planted_soil_left':tileid
+				tileid = p==31?'planted_soil_middle':tileid
+				tileid = p==32?'planted_soil_right':tileid
+				tileid = p==33?'shell':tileid
+				tileid = p==34?'soil_left':tileid
+				tileid = p==35?'soil_right':tileid
+				tileid = p==36?'soil':tileid
+				tileid = p==37?'spikedturtle':tileid
+				tileid = p==38?'starbox':tileid
+				tileid = p==39?'staticplant':tileid
+				tileid = p==40?'stone':tileid
+				tileid = p==41?'finish':tileid
+				tileid = p==42?'grass_top_right_corner':tileid
+				tileid = p==43?'grass_top_left_corner':tileid
+				tileid = p==44?'grass_top_right_rounded_soil':tileid
+				tileid = p==45?'grass_top_left_rounded_soil':tileid
+				return tileid
+}
+
+if(have==true)
+{
+tiles=new Array()
+    for (i=0;i<so.length;i++)
+	 {
+	 	for (j=0;j<so[0].length;j++)
+	 	{
+          let x = i;
+          let y = j;
+          let gridX = i * tileWidth;
+          let gridY = j * tileHeight;
+          onclicked = "this.style.top='-800px';doMouseClick(event)"
+          onmouseovered = "if (clicked==1){this.style.top='-800px'}"
+          src= so[i][j]==""?'air':so[i][j]
+//           alert(src)
+          if(src!="air")
+          {
+          document.write('<img onclick="'+onclicked+'" onmouseover="'+onmouseovered+'" src="tiles\/'+src+'.png" style="position:absolute;z-index:3;left:'+tileWidth*j+';top:'+tileHeight*i+';width:'+tileWidth+';height:'+tileHeight+'">')
+          }
+		  //alert(tiles.length)
+          tiles[tiles.length] = so[i][j]
+	 	}
+    }
+	convert()
+}
+</script>
+</div>
+<!--<button style='position:absolute; left:0; top:805' onclick="location.href = 'convert.html'">Convert</button>-->
+<div id="scripter"><script>//alert("Hello world !")</script></div>
+</body>
+</html>
+
+<!--
+
+[['','','','','','','','','','','','','','','','','','','','',],['','','','','','','','','','','','','','','','','','','','',],['','','','','','','','','','','','','','','','','','','','',],['','','','','','','','','','','','','','','','','','','','',],['','','','','','','','','','','','','','','','','','','','',],['','','','','','','','','','','','','','','','','','','','',],['mario','','','','','','','','','','','','','','','','','','','',],['grass_top_left','grass_top','grass_top','grass_top','grass_top','grass_top','grass_top','grass_top','grass_top','grass_top','grass_top','grass_top','grass_top','grass_top','grass_top','grass_top','grass_top','grass_top_right','','',],]|1
+
+-->
+

@@ -1,0 +1,10 @@
+<button onclick='download(localStorage.getItem("level"))'>Télécharger le code</button>
+<script>
+      function download(b) {
+    var fileName = prompt("Title","mylevel")+".smml";
+    var pp = document.createElement('a');
+    pp.setAttribute('href', 'data:text/plain;charset=utf-8,' + b);
+    pp.setAttribute('download', fileName);
+    pp.click();
+  }
+</script>
