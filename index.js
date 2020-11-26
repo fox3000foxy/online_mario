@@ -22,8 +22,21 @@ io.on('connection', (socket) => {
   socket.on('peach4', (msg) => {io.emit('peach4', msg);});
   socket.on('peach5', (msg) => {io.emit('peach5', msg);});
   socket.on('pause', (msg) => {io.emit('pause', msg);});
+  socket.on('victory', (msg) => {io.emit('victory', msg);});
+  socket.on('d1', (msg) => {io.emit('d1', msg);});
+  socket.on('d2', (msg) => {io.emit('d2', msg);});
+  socket.on('d3', (msg) => {io.emit('d3', msg);});
+  socket.on('c1', (msg) => {io.emit('c1', msg);});
+  socket.on('c2', (msg) => {io.emit('c2', msg);});
+  socket.on('c3', (msg) => {io.emit('c3', msg);});
+  socket.on('c12', (msg) => {io.emit('c12', msg);});
+  socket.on('c22', (msg) => {io.emit('c22', msg);});
+  socket.on('c32', (msg) => {io.emit('c32', msg);});
+  socket.on('s1', (msg) => {io.emit('s1', msg);});
+  socket.on('s2', (msg) => {io.emit('s2', msg);});
+  socket.on('s3', (msg) => {io.emit('s3', msg);});
   
-  socket.on("ready" , (player) => {
+  /*socket.on("ready" , (player) => {
       if(player=="1:true") {player1 = "ok",io.emit("player1","ok")}
       if(player=="2:true") {player2 = "ok",io.emit("player2","ok")}
       if(player=="2:true") {player3 = "ok",io.emit("player3","ok")}
@@ -38,7 +51,7 @@ io.on('connection', (socket) => {
       console.log(player1)
       console.log(player2)
       console.log(player3)
-});
+});*/
 });
 
 

@@ -8,6 +8,15 @@
  * PRE CODE
  * -------------------------------------------
  */
+you = "none"
+if (location.href.indexOf("&play")!=-1)
+{
+ you = location.href.split("&play=")[1].split("&")[0]
+ if (you.indexOf("#")!=-1)
+ {
+ you = you.split("#")[0]
+ }
+}
  camheight=1
   if(location.href.indexOf("base_level") != -1 && isNaN(parseInt(location.href.split("level=")[1]))){location.href = "index.html"}
  levelnumber = location.href.indexOf("base_level") != -1?parseInt(location.href.split("level=")[1]):0
@@ -15,9 +24,9 @@
 	for (i=0;i<definedLevels[levelnumber].data.length;i++){
 	for (j=0;j<definedLevels[levelnumber].data[0].length;j++){
 	if (definedLevels[levelnumber].data[i][j]=='mario'){	
-	if (location.href.indexOf('&luigi') != -1)
+	if (location.href.indexOf('luigi') != -1)
 	definedLevels[levelnumber].data[i-1][j]='luigi'
-	if (location.href.indexOf('&peach') != -1)
+	if (location.href.indexOf('peach') != -1)
 	definedLevels[levelnumber].data[i+1][j]='peach'
 	}
 	}
@@ -55,9 +64,9 @@ nhref += "&lives="+newlifes
 after = parseInt((ghref+1))
 nhref += location.href.split("&lives="+after)[1].split("&")[0]
     	player = "&player="+location.href.split("&player=")[1].split("&")[0]
-        number = "&number="+location.href.split("&number=")[1].split("&")[0]
+        salon= "&salon="+location.href.split("&salon=")[1].split("&")[0]
         play = "&play="+location.href.split("&play=")[1].split("&")[0]
-jref = nhref + "&coins="+numberCoin%100+player+number+play
+jref = nhref + "&coins="+numberCoin%100+player+salon+play
 if (location.href.indexOf("&luigi")!=-1){jref += "&luigi"}
 if (location.href.indexOf("&peach")!=-1){jref += "&peach"}
 newhref = jref
@@ -69,7 +78,7 @@ if (document.getElementById('liveNumber').innerHTML < 1){
 if (location.href.indexOf("&luigi")!=-1){newhref += "&luigi"}
 if (location.href.indexOf("&peach")!=-1){newhref += "&peach"}
 
-        newhref += "&lives=4&coins=0"+player+number+play
+        newhref += "&lives=4&coins=0"+player+salon+play
 	}
 	if(location.href.indexOf("editor=0")!=-1)
 		newhref = newhref.replace("editor=0","editor=3")
@@ -282,9 +291,9 @@ var Level = Base.extend({
 		coinNumber_oui = "&coins="+document.getElementById("coinNumber").innerHTML
 		liveNumber_oui = "&lives="+document.getElementById("liveNumber").innerHTML
 		player = "&player="+location.href.split("&player=")[1].split("&")[0]
-        number = "&player="+location.href.split("&number=")[1].split("&")[0]
+        //number = "&number="+location.href.split("&number=")[1].split("&")[0]
         play = "&play="+location.href.split("&play=")[1].split("&")[0]
-		location.href = 'base_level.html?level='+numberlevel+luigi_oui+peach_oui+liveNumber_oui+coinNumber_oui+player+number+play
+		location.href = 'base_level.html?level='+numberlevel+luigi_oui+peach_oui+liveNumber_oui+coinNumber_oui+player+"&salon="+salon+play
 		localStorage.setItem("editorfinish",true)
 		this.load(definedLevels[this.id + 1]);
 		
@@ -1159,16 +1168,22 @@ var Star = ItemFigure.extend({
 	},
 	hit: function(opponent) {
 		if(!this.taken && this.active && opponent instanceof Mario) {
+			if (you=="mario"){
 			opponent.invincible();
 			this.die();
+			}
 		}
 		if(!this.taken && this.active && opponent instanceof Luigi) {
+			if (you=="luigi"){
 			opponent.invincible();
 			this.die();
 		}
+		}
 		if(!this.taken && this.active && opponent instanceof Peach) {
+			if (you=="peach"){
 			opponent.invincible();
 			this.die();
+			}
 		}
 	},
 });
@@ -1264,7 +1279,7 @@ var Mushroom = ItemFigure.extend({
 		}
 	},
 	hit: function(opponent) {
-		if(this.active && opponent instanceof Mario) {
+		if(this.active && opponent instanceof Mario && you=="mario") {
 			if(this.mode === mushroom_mode.mushroom)
 				opponent.grow();
 			else if(this.mode === mushroom_mode.plant)
@@ -1272,7 +1287,7 @@ var Mushroom = ItemFigure.extend({
 				
 			this.die();
 		}
-		if(this.active && opponent instanceof Luigi) {
+		if(this.active && opponent instanceof Luigi && you=="luigi") {
 			if(this.mode === mushroom_luigi_mode.mushroom)
 				opponent.grow();
 			else if(this.mode === mushroom_luigi_mode.plant)
@@ -1280,7 +1295,7 @@ var Mushroom = ItemFigure.extend({
 				
 			this.die();
 		}
-		if(this.active && opponent instanceof Peach) {
+		if(this.active && opponent instanceof Peach && you=="peach") {
 			if(this.mode === mushroom_peach_mode.mushroom)
 				opponent.grow();
 			else if(this.mode === mushroom_peach_mode.plant)
@@ -1356,8 +1371,174 @@ var w = 0
 	//ghost123 = new Array()
 	//i=-1
 	//}
+	mario1=0
+	mario2=0
+	mario5=0
+	luigi1=0
+	luigi2=0
+	luigi5=0
+	peach1=0
+	peach2=0
+	peach5=0
+	victory=0
+	d1=0
+	d2=0
+	d3=0
+	c1=0
+	c2=0
+	c3=0
+	c12=0
+	c22=0
+	c32=0
+	s1=0
+	s2=0
+	s3=0
+	salon = "main"
+	if(location.href.indexOf("salon")!=-1) salon = location.href.split("&salon=")[1].split("&")[0]
+	socket = io()
+			socket.on('mario1', function(msg){
+                num = msg.split("&")[0]
+			if(salon==num && you!="mario"){
+			mario1 = parseInt(msg.split("&")[1])
+			// alert("lol")
+			}
+			})
+			socket.on('mario2', function(msg){
+			    num = msg.split("&")[0]
+			if(salon==num && you!="mario"){
+			//alert(msg)
+			mario2 = parseInt(msg.split("&")[1])
+			// alert("lol")
+			}
+			})
+            socket.on('mario5', function(msg){
+			    num = msg.split("&")[0]
+			if(salon==num && you!="mario"){
+			//alert(msg)
+			final = msg.split("&")[1]=="true" ? true : false 
+			mario5 = final
+			// alert("lol")
+			}
+			})
+            socket.on('luigi1', function(msg){
+			    num = msg.split("&")[0]
+			if(salon==num && you!="luigi"){
+			luigi1 = parseInt(msg.split("&")[1])
+			// alert("lol")
+			}
+			})
+			socket.on('luigi2', function(msg){
+			    num = msg.split("&")[0]
+			if(salon==num && you!="luigi"){
+			//alert(msg)
+			luigi2 = parseInt(msg.split("&")[1])
+			// alert("lol")
+			}
+			})
+            socket.on('luigi5', function(msg){
+			    num = msg.split("&")[0]
+			if(salon==num && you!="luigi"){
+			//alert(msg)
+            final = msg.split("&")[1]=="true" ? true : false 
+			luigi5 = final
+			// alert("lol")
+			}
+			})
+            socket.on('peach1', function(msg){
+			    num = msg.split("&")[0]
+			if(salon==num && you!="peach"){
+			peach1 = parseInt(msg.split("&")[1])
+			// alert("lol")
+			}
+			})
+			socket.on('peach2', function(msg){
+			    num = msg.split("&")[0]
+			if(salon==num && you!="peach"){
+			//alert(msg)
+			peach2 = parseInt(msg.split("&")[1])
+			// alert("lol")
+			}
+			})
+            socket.on('peach5', function(msg){
+			    num = msg.split("&")[0]
+			if(salon==num && you!="peach"){
+			//alert(msg)
+			final = msg.split("&")[1]=="true" ? true : false 
+			peach5 = final
+			// alert("lol")
+			}
+			})
+            socket.on('victory', function(msg){
+                num = msg.split("&")[0]
+			if(salon==num) victory = 1
+            })
+	            socket.on('d1', function(msg){
+                num = msg.split("&")[0]
+			if(salon==num) d1 = 1
+                setTimeout("d1 = 0",100)
+            })
+	            socket.on('d2', function(msg){
+                num = msg.split("&")[0]
+			if(salon==num) d2 = 1
+                setTimeout("d2 = 0",100)
+            })
+	            socket.on('d3', function(msg){
+                num = msg.split("&")[0]
+			if(salon==num) d3 = 1
+                setTimeout("d3 = 0",100)
+            })
+            socket.on('c1', function(msg){
+                num = msg.split("&")[0]
+			if(salon==num) c1 = msg.split("&")[1]
+                setTimeout("c1 = 0",30)
+            })
+            socket.on('c2', function(msg){
+                num = msg.split("&")[0]
+			if(salon==num) c2 = msg.split("&")[1]
+                setTimeout("c2 = 0",30)
+            })
+            socket.on('c3', function(msg){
+                num = msg.split("&")[0]
+			if(salon==num) c3 = msg.split("&")[1]
+                setTimeout("c3 = 0",30)
+            })
+            
+            socket.on('c12', function(msg){
+                num = msg.split("&")[0]
+			if(salon==num) c12 = msg.split("&")[1]
+                setTimeout("c12 = 0",30)
+            })
+            socket.on('c22', function(msg){
+                num = msg.split("&")[0]
+			if(salon==num) c22 = msg.split("&")[1]
+                setTimeout("c22 = 0",30)
+            })
+            socket.on('c32', function(msg){
+                num = msg.split("&")[0]
+			if(salon==num) c32 = msg.split("&")[1]
+                setTimeout("c32 = 0",30)
+            })            
+            socket.on('s1', function(msg){
+                num = msg.split("&")[0]
+			if(salon==num) s1 = msg.split("&")[1]
+                setTimeout("s1 = 0",30)
+            })
+            socket.on('s2', function(msg){
+                num = msg.split("&")[0]
+			if(salon==num) s2 = msg.split("&")[1]
+                setTimeout("s2 = 0",30)
+            })
+            socket.on('s3', function(msg){
+                num = msg.split("&")[0]
+			if(salon==num) s3 = msg.split("&")[1]
+                setTimeout("s3 = 0",30)
+            })
+	
 var Mario = Hero.extend({
 	init: function(x, y, level) {
+        mario1 = x
+        mario2 = y
+        mario5 = 0
 		this.standSprites = [
 			[[{ x : 0, y : 81},{ x: 481, y : 83}],[{ x : 81, y : 0},{ x: 561, y : 83}]],
 			[[{ x : 0, y : 162},{ x: 481, y : 247}],[{ x : 81, y : 243},{ x: 561, y : 247}]]
@@ -1399,12 +1580,20 @@ var Mario = Hero.extend({
 			this.setMarioState(mario_states.normal);
 			this._super(state);
 		}
+
 	},
 	setPosition: function(x, y) {
-		 // xmario = this.x
-		 // ymario = this.y
-		this._super(x, y);
-        
+//         alert(salon+"&"+this.x)
+		if(you=="mario"){socket.emit("mario1",salon+"&"+this.x)}
+		if(you=="mario"){socket.emit("mario2",salon+"&"+this.y)}
+		if(you=="mario"){socket.emit("mario5",salon+"&"+this.crouching)}
+		if(you!="mario"){this._super(mario1, mario2);}
+		if(you=="mario"){this._super(x, y);}
+		// REPRENDRE ICI
+		// if (mario1<this.x){this.walkRight()}
+		// if (mario1>this.x){this.walkLeft()}
+		// if (mario1==this.x){this.stand()}
+		
 		var r = this.level.width - 640;
 		// var r2 = this.level.height - 640;
 		if (cam==0 ||counterplayer==1){w = (this.x <= 210) ? 0 : ((this.x >= this.level.width - 230) ? r : r / (this.level.width - 440) * (this.x - 210));}
@@ -1421,14 +1610,20 @@ var Mario = Hero.extend({
 		if (this.x >= definedLevels[levelnumber].x + demimarge)
 		document.getElementById("finish").style.zIndex= '100'
 		if (this.x >= definedLevels[levelnumber].x && this.x <= definedLevels[levelnumber].x + marge && this.y >= definedLevels[levelnumber].y && this.y <= definedLevels[levelnumber].y + 128 && this.onground)
-			 {this.victory()}
+			this.victory()
 		//setInterval("i++;ghost123[i]={x:"+this.x+",y:"+this.y+"}",1000)
+            if(victory==1){this.victory()}
+        if(d1==1) this.die()
+        if(c12=="hurt"&& you!="mario") this.hurt()
+        if(c1=="grow"  && you!="mario") this.grow()
+        if(s1=="true"  && you!="mario") this.shooter()
 
 			 // alert(x+","+y)
 	},
 	input: function(keys) {
 		this.fast = keys.accelerate;
-		this.crouching = keys.down;
+        if(you=="mario"){this.crouching = keys.down;}
+        if(you!="mario"){this.crouching = mario5;}
 		
 		if(!this.crouching) {
 			if(this.onground && keys.up)
@@ -1437,7 +1632,7 @@ var Mario = Hero.extend({
 			if(keys.accelerate && this.marioState === mario_states.fire)
 				this.shoot();
 				
-			if(keys.right || keys.left)
+			if(keys.right=="true" || keys.left=="true")
 				this.walk(keys.left, keys.accelerate);
 			else
 				this.vx = 0;
@@ -1445,6 +1640,8 @@ var Mario = Hero.extend({
 	},
 
 	victory: function() {
+        
+        socket.emit("victory",salon+"&"+true)
 		document.getElementById("finish").innerHTML ='<img id="finish_level" src="Content\/'+localStorage.getItem("attr")+'mario-finish-2.gif">'
 		this.level.playMusic('success');
 		this.clearFrames();
@@ -1496,6 +1693,7 @@ var Mario = Hero.extend({
 			this.setState(size_states.big);
 			this.blink(3);
 			this.grow()
+		socket.emit("c1",salon+"&"+"grow")
 		}
 	},
 	shooter: function() {
@@ -1503,11 +1701,13 @@ var Mario = Hero.extend({
 			this.grow();
 		else
 			this.level.playSound('grow');
-			
+            
+        //MARQUE PAGE : AJOUTER LE STATE SHOOTER COMMUN
 		this.setMarioState(mario_states.fire);
+        socket.emit("s1",salon+"&"+true)
 	},
 	walk: function(reverse, fast) {
-		this.vx = constants.walking_v * (fast ? 2 : 1) * (reverse ? - 1 : 1);
+		this.vx = constants.walking_v * (fast ? 2 : 1) * (reverse=="true" ? - 1 : 1);
 	},
 	walkRight: function() {
 		if(this.state === size_states.small) {
@@ -1624,6 +1824,7 @@ var Mario = Hero.extend({
 		return true;
 	},
 	die: function() {
+        socket.emit("d1",salon+"&"+1)
 		adddeathplayer += 1
 		this.setMarioState(mario_states.normal);
 		this.deathStepDown = Math.ceil(240 / this.deathFrames);
@@ -1652,6 +1853,7 @@ var Mario = Hero.extend({
 			this.blink(Math.ceil(this.invulnerable / (2 * constants.blinkfactor)));
 			this.setState(size_states.small);
 			this.level.playSound('hurt');			
+            socket.emit("c12",salon+"&"+"hurt")
 		}
 	},
 }, 'mario');
@@ -1665,6 +1867,9 @@ var Mario = Hero.extend({
 var w = 0
 var Luigi = Hero.extend({
 	init: function(x, y, level) {
+        luigi1 = x
+        luigi2 = y
+        luigi5 = 0
 		this.standSprites = [
 			[[{ x : 0, y : 81},{ x: 481, y : 83}],[{ x : 81, y : 0},{ x: 561, y : 83}]],
 			[[{ x : 0, y : 162},{ x: 481, y : 247}],[{ x : 81, y : 243},{ x: 561, y : 247}]]
@@ -1707,9 +1912,11 @@ var Luigi = Hero.extend({
 	},
 
 	setPosition: function(x, y) {
-		 // xluigi = this.x
-		 // yluigi = this.y
-		this._super(x, y);
+        if(you=="luigi"){socket.emit("luigi1",salon+"&"+this.x)}
+		if(you=="luigi"){socket.emit("luigi2",salon+"&"+this.y)}
+		if(you=="luigi"){socket.emit("luigi5",salon+"&"+this.crouching)}
+		if(you!="luigi"){this._super(luigi1, luigi2);}
+		if(you=="luigi"){this._super(x, y);}
 		var r = this.level.width - 640;
 		// var r2 = this.level.height - 640;
 		if (cam==1 ||counterplayer==1){w = (this.x <= 210) ? 0 : ((this.x >= this.level.width - 230) ? r : r / (this.level.width - 440) * (this.x - 210));}
@@ -1730,10 +1937,17 @@ var Luigi = Hero.extend({
 		//setInterval("i++;ghost123[i]={x:"+this.x+",y:"+this.y+"}",1000)
 
 			 // alert(x+","+y)
+			 if(victory == 1){this.victory()}
+			 if(d2==1) this.die()
+        if(c22=="hurt"&& you!="luigi") this.hurt()
+        if(c2=="grow"  && you!="luigi") this.grow()
+        if(s2=="true"  && you!="peach") this.shooter()
+
 	},
 	input: function(keys) {
 		this.fast = keys.accelerate;
-		this.crouching = keys.down;
+        if(you=="luigi"){this.crouching = keysluigi.down;}
+        if(you!="luigi"){this.crouching = luigi5;}
 		
 		if(!this.crouching) {
 			if(this.onground && keys.up)
@@ -1742,13 +1956,14 @@ var Luigi = Hero.extend({
 			if(keys.accelerate && this.luigiState === luigi_states.fire)
 				this.shoot();
 				
-			if(keys.right || keys.left)
+			if(keys.right=="true" || keys.left=="true")
 				this.walk(keys.left, keys.accelerate);
 			else
 				this.vx = 0;
 		}
 	},
 	victory: function() {
+        socket.emit("victory",salon+"&"+true)
 		document.getElementById("finish").innerHTML ='<img id="finish_level" src="Content\/'+localStorage.getItem("attr")+'mario-finish-2.gif">'
 		this.level.playMusic('success');
 		this.clearFrames();
@@ -1795,6 +2010,7 @@ var Luigi = Hero.extend({
 	},
 	grow: function() {
 		if(this.state === size_states.small) {
+        socket.emit("c2",salon+"&"+"grow")
 			this.level.playSound('grow');
 			this.setState(size_states.big);
 			this.blink(3);
@@ -1807,9 +2023,10 @@ var Luigi = Hero.extend({
 			this.level.playSound('grow');
 			
 		this.setLuigiState(luigi_states.fire);
+        socket.emit("s2",salon+"&"+true)
 	},
 	walk: function(reverse, fast) {
-		this.vx = constants.walking_v * (fast ? 2 : 1) * (reverse ? - 1 : 1);
+		this.vx = constants.walking_v * (fast ? 2 : 1) * (reverse=="true" ? - 1 : 1);
 	},
 	walkRight: function() {
 		if(this.state === size_states.small) {
@@ -1920,6 +2137,7 @@ var Luigi = Hero.extend({
 		return true;
 	},
 	die: function() {
+        socket.emit("d2",salon+"&"+1)
 		adddeathplayer += 1
 		this.setLuigiState(luigi_states.normal);
 		this.deathStepDown = Math.ceil(240 / this.deathFrames);
@@ -1941,6 +2159,7 @@ var Luigi = Hero.extend({
 			this.blink(Math.ceil(this.invulnerable / (2 * constants.blinkfactor)));
 			this.setState(size_states.small);
 			this.level.playSound('hurt');			
+            socket.emit("c22",salon+"&"+"hurt")
 		}
 	},
 }, 'luigi');
@@ -1954,6 +2173,9 @@ var Luigi = Hero.extend({
 var w = 0
 var Peach = Hero.extend({
 	init: function(x, y, level) {
+        peach1 = x
+        peach2 = y
+        peach5 = 0
 		this.standSprites = [
 			[[{ x : 0, y : 81},{ x: 481, y : 83}],[{ x : 81, y : 0},{ x: 561, y : 83}]],
 			[[{ x : 0, y : 162},{ x: 481, y : 247}],[{ x : 81, y : 243},{ x: 561, y : 247}]]
@@ -1996,9 +2218,11 @@ var Peach = Hero.extend({
 	},
 
 	setPosition: function(x, y) {
-		 // xpeach = this.x
-		 // ypeach = this.y
-		this._super(x, y);
+        if(you=="peach"){socket.emit("peach1",salon+"&"+this.x)}
+		if(you=="peach"){socket.emit("peach2",salon+"&"+this.y)}
+		if(you=="peach"){socket.emit("peach5",salon+"&"+this.crouching)}
+		if(you!="peach"){this._super(peach1, peach2);}
+		if(you=="peach"){this._super(x, y);}
 		var r = this.level.width - 640;
 		// var r2 = this.level.height - 640;
 		if (cam==2){w = (this.x <= 210) ? 0 : ((this.x >= this.level.width - 230) ? r : r / (this.level.width - 440) * (this.x - 210));}
@@ -2018,11 +2242,17 @@ var Peach = Hero.extend({
 		document.getElementById("finish").style.zIndex= '100'
 		if (this.x >= definedLevels[levelnumber].x && this.x <= definedLevels[levelnumber].x + marge && this.y >= definedLevels[levelnumber].y && this.y <= definedLevels[levelnumber].y + 128 && this.onground)
 			 {this.victory()}
+			 if(victory==1){this.victory()}
+            if(d3==1) this.die()
+        if(c32=="hurt" && you!="peach") this.hurt()
+        if(c3=="grow"  && you!="peach") this.grow()
+        if(s3=="true"  && you!="peach") this.shooter()
 		//setInterval("i++;ghost123[i]={x:"+this.x+",y:"+this.y+"}",1000)
-
 			 // alert(x+","+y)
 	},
 	input: function(keys) {
+        if(you=="peach"){this.crouching = keyspeach.down;}
+        if(you!="peach"){this.crouching = peach5;}
 		this.fast = keys.accelerate;
 		this.crouching = keys.down;
 		
@@ -2033,13 +2263,15 @@ var Peach = Hero.extend({
 			if(keys.accelerate && this.peachState === peach_states.fire)
 				this.shoot();
 				
-			if(keys.right || keys.left)
+			if(keys.right=="true" || keys.left=="true")
 				this.walk(keys.left, keys.accelerate);
 			else
 				this.vx = 0;
 		}
 	},
 	victory: function() {
+        
+        socket.emit("victory",salon+"&"+true)
 		document.getElementById("finish").innerHTML ='<img id="finish_level" src="Content\/'+localStorage.getItem("attr")+'mario-finish-2.gif">'
 
 		this.level.playMusic('success');
@@ -2087,6 +2319,7 @@ var Peach = Hero.extend({
 	},
 	grow: function() {
 		if(this.state === size_states.small) {
+        socket.emit("c3",salon+"&"+"grow")
 			this.level.playSound('grow');
 			this.setState(size_states.big);
 			this.blink(3);
@@ -2098,10 +2331,12 @@ var Peach = Hero.extend({
 		else
 			this.level.playSound('grow');
 			
+        
+        socket.emit("s3",salon+"&"+true)
 		this.setPeachState(peach_states.fire);
 	},
 	walk: function(reverse, fast) {
-		this.vx = constants.walking_v * (fast ? 2 : 1) * (reverse ? - 1 : 1);
+		this.vx = constants.walking_v * (fast ? 2 : 1) * (reverse=="true" ? - 1 : 1);
 	},
 	walkRight: function() {
 		if(this.state === size_states.small) {
@@ -2212,12 +2447,14 @@ var Peach = Hero.extend({
 		return true;
 	},
 	die: function() {
+        socket.emit("d3",salon+"&"+1)
 		adddeathplayer += 1
 		this.setPeachState(peach_states.normal);
 		this.deathStepDown = Math.ceil(240 / this.deathFrames);
 		this.setupFrames(9, 2, false);
 		this.setImage(images.spritesp, 81, 324);
 		this.level.playMusic('die');
+//         socket.emit("mariodie",salon)
 		this._super();
 	},
 	
@@ -2233,6 +2470,7 @@ var Peach = Hero.extend({
 			this.blink(Math.ceil(this.invulnerable / (2 * constants.blinkfactor)));
 			this.setState(size_states.small);
 			this.level.playSound('hurt');			
+            socket.emit("c32",salon+"&"+"hurt");
 		}
 	},
 }, 'peach');
@@ -2292,30 +2530,36 @@ var Enemy = Figure.extend({
 			return;
 			
 		if(opponent instanceof Mario) {
+			if(you=="mario"){
 			if(opponent.vy < 0 && opponent.y - opponent.vy >= this.y + this.state * 32) {
 				opponent.setVelocity(opponent.vx, constants.bounce);
 				this.hurt(opponent);
 			} else {
 				opponent.hurt(this);
+			}
 			}
 		}
 			
 		if(opponent instanceof Luigi) {
-			if(opponent.vy < 0 && opponent.y - opponent.vy >= this.y + this.state * 32) {
-				opponent.setVelocity(opponent.vx, constants.bounce);
-				this.hurt(opponent);
-			} else {
-				opponent.hurt(this);
-			}
+			if(you=="luigi"){
+				if(opponent.vy < 0 && opponent.y - opponent.vy >= this.y + this.state * 32) {
+					opponent.setVelocity(opponent.vx, constants.bounce);
+					this.hurt(opponent);
+				} else {
+					opponent.hurt(this);
+				}
+				}
 		}
 			
 		if(opponent instanceof Peach) {
-			if(opponent.vy < 0 && opponent.y - opponent.vy >= this.y + this.state * 32) {
-				opponent.setVelocity(opponent.vx, constants.bounce);
-				this.hurt(opponent);
-			} else {
-				opponent.hurt(this);
-			}
+			if(you=="peach"){
+				if(opponent.vy < 0 && opponent.y - opponent.vy >= this.y + this.state * 32) {
+					opponent.setVelocity(opponent.vx, constants.bounce);
+					this.hurt(opponent);
+				} else {
+					opponent.hurt(this);
+				}
+				}
 		}
 	},
 });
@@ -2413,19 +2657,25 @@ var TurtleShell = Enemy.extend({
 			}
 		} else {
 			if(opponent instanceof Mario) {
+				if (you=="mario"){
 				this.setSpeed(opponent.direction === directions.right ? -constants.shell_v : constants.shell_v);
 				opponent.setVelocity(opponent.vx, constants.bounce);
 				this.idle = 2;
+				}
 			}
 			if(opponent instanceof Luigi) {
-				this.setSpeed(opponent.direction === directions.right ? -constants.shell_v : constants.shell_v);
-				opponent.setVelocity(opponent.vx, constants.bounce);
-				this.idle = 2;
+				if (you=="luigi"){
+					this.setSpeed(opponent.direction === directions.right ? -constants.shell_v : constants.shell_v);
+					opponent.setVelocity(opponent.vx, constants.bounce);
+					this.idle = 2;
+					}
 			}
 			if(opponent instanceof Peach) {
-				this.setSpeed(opponent.direction === directions.right ? -constants.shell_v : constants.shell_v);
-				opponent.setVelocity(opponent.vx, constants.bounce);
-				this.idle = 2;
+				if (you=="peach"){
+					this.setSpeed(opponent.direction === directions.right ? -constants.shell_v : constants.shell_v);
+					opponent.setVelocity(opponent.vx, constants.bounce);
+					this.idle = 2;
+					}
 			} else if(opponent instanceof GreenTurtle && opponent.state === size_states.small)
 				this.takeBack(opponent);
 		}
@@ -2592,15 +2842,21 @@ var SpikedTurtle = Enemy.extend({
 			return;
 			
 		if(opponent instanceof Mario) {
+			if (you=="mario"){
 			opponent.hurt(this);
+			}
 		}
 			
 		if(opponent instanceof Luigi) {
-			opponent.hurt(this);
+			if (you=="luigi"){
+				opponent.hurt(this);
+				}
 		}
 			
 		if(opponent instanceof Peach) {
-			opponent.hurt(this);
+			if (you=="peach"){
+				opponent.hurt(this);
+				}
 		}
 	},
 }, 'spikedturtle');
@@ -2630,15 +2886,21 @@ var Plant = Enemy.extend({
 			return;
 			
 		if(opponent instanceof Mario) {
-			opponent.hurt(this);
+			if (you=="mario"){
+				opponent.hurt(this);
+				}
 		}
 			
 		if(opponent instanceof Luigi) {
-			opponent.hurt(this);
+			if (you=="luigi"){
+				opponent.hurt(this);
+				}
 		}
 			
 		if(opponent instanceof Peach) {
-			opponent.hurt(this);
+			if (you=="peach"){
+				opponent.hurt(this);
+				}
 		}
 	},
 });
@@ -2759,7 +3021,7 @@ var PipePlant = Plant.extend({
  */
 // started=0
 // compterlesjoueurs = parseInt(location.href.split("&number=")[1].split("&")[0])
-// you = parseInt(location.href.split("&player=")[1].split("&")[0])
+//you = parseInt(location.href.split("&player=")[1].split("&")[0])
 // allplayersconnected = true
 // player1 = "no"
 // player2 = "no"
@@ -2792,7 +3054,6 @@ $(document).ready(function() {
 //         if (started==0 && allplayersconnected==true){
 //             alert("lol")
             level = new Level('world');
-      level.pause()
             level.load(definedLevels[levelnumber]);
             level.setSounds(new SoundManager());
             setInterval(function() {

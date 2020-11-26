@@ -36,7 +36,7 @@ border-radius : 3px;
 color:white;
 font-size:150%;
 text-align:center;
-width:20%
+width:30%
 }
 
 #play
@@ -45,6 +45,12 @@ position:absolute;
 top : 47%;
 left : 60%;
 font-size:100%;
+}
+*{
+font-size:100%
+}
+select{
+font-size:75%
 }
 </style>
 <script>
@@ -61,27 +67,25 @@ window.onload = function() {
 		});
 }
 
-yc = "mario"
+yc = "none"
 nb = "1"
 
 function addPlayersEffect() {
-if (yc=="mario") {
 player2 = "luigi"
 player3 = "peach"
-}
-if (yc=="luigi") {
-player2 = "mario"
-player3 = "peach"
-}
-if (yc=="peach") {
-player2 = "mario"
-player3 = "luigi"
-}
-yourrank = document.forms.kb.yourrank.value
-if (nb=="3") return "&player="+yourrank+"&number="+nb+"&play="+yc+"&"+player2+"&"+player3
-if (nb=="2") return "&player="+yourrank+"&number="+nb+"&play="+yc+"&"+player2
-if (nb=="1") return "&player="+yourrank+"&number="+nb+"&play="+yc
+salon= document.forms.kb.salon.value
+yourrank = 1
+if (nb=="3") return "&salon="+salon+"&player="+yourrank+"&number="+nb+"&play="+yc+"&"+player2+"&"+player3
+if (nb=="2") return "&salon="+salon+"&player="+yourrank+"&number="+nb+"&play="+yc+"&"+player2
+if (nb=="1") return "&salon="+salon+"&player="+yourrank+"&number="+nb+"&play="+yc
 return false
+}
+
+function changeYC(ind)
+{
+if(ind==1){yc = 'mario'}
+else if(ind==2){yc = 'luigi'}
+else if(ind==3){yc = 'peach'}
 }
 </script>
 <textarea id="textbox"></textarea>
@@ -90,22 +94,33 @@ return false
 <button onclick="confirm('Ok : Custom level\nCancel: Basics levels')?window.location.href = 'menu.html?editor=0&lives=4&coins=0'+addPlayersEffect():window.location.href = 'base_level.html?level='+prompt('What level (number of (0 to 14)) ? ','0') + '&lives=4&coins=0'+addPlayersEffect()" class="menu">Play</button><br><br>
 <button onclick="window.location.href = 'menu2.html'" class="menu">Create</button><br><br>
 <button onclick='/*confirm("OK: By URL\nCancel:By file on your computer")?prompt("Url",""):*/fileInput.click()' class="menu">Level file</button><br><br>
-<form name="check" class="menu" id="kb">
-<input type="range" min=1 max=3 value=1 name="yourrank">
-<select name="theselect" onchange="localStorage.setItem('attr',document.forms.kb.theselect.children[document.forms.kb.theselect.selectedIndex].value);localStorage.setItem('attrindex',document.forms.kb.theselect.selectedIndex);location.reload()">
+<form name="check" class="menu" id="kb"><br>
+<!-- <input type="range" min=1 max=3 value=1 name="yourrank"> -->
+Style : <select name="theselect" onchange="localStorage.setItem('attr',document.forms.kb.theselect.children[document.forms.kb.theselect.selectedIndex].value);localStorage.setItem('attrindex',document.forms.kb.theselect.selectedIndex);location.reload()">
 <option value="smw/">Super Mario World</option>
 <option value="smb/">Super Mario Bros</option>
-</select>
-<select name="yc">
-<option value="mario" onclick="yc = this.value">Mario</option>
-<option value="luigi" onclick="yc = this.value">Luigi</option>
-<option value="peach" onclick="yc = this.value">Peach</option>
+</select><br><br>
+Room : <input name="salon" size=7><br>
+<br>
+<select name="yc" onchange="console.log(this.selectedIndex);changeYC(this.selectedIndex);">
+<option value="" >--Choose--</option>
+<option value="mario" id="yc1">Mario</option>
+<option value="luigi" id="yc2" disabled>Luigi</option>
+<option value="peach" id="yc3" disabled>Peach</option>
 <!-- yc = document.forms.kb.yc.children[document.forms.kb.yc.selectedIndex].value -->
 </select>
-<select name="numberofplayers">
-<option value="1" onclick="nb = this.value">1 player</option>
-<option value="2" onclick="nb = this.value">2 players</option>
-<option value="3" onclick="nb = this.value">3 players</option>
+<script>
+yc1 = document.getElementById("yc1")
+yc2 = document.getElementById("yc2")
+yc3 = document.getElementById("yc3")
+function endis1(){yc2.setAttribute("disabled","");yc3.setAttribute("disabled","")}
+function endis2(){yc2.removeAttribute("disabled");yc3.setAttribute("disabled","")}
+function endis3(){yc2.removeAttribute("disabled");yc3.removeAttribute("disabled")}
+</script>
+<select name="numberofplayers" onchange="if(this.selectedIndex==0){nb = this.options[0].value;endis1()};if(this.selectedIndex==1){nb = this.options[1].value;endis2()};if(this.selectedIndex==2){nb = this.options[2].value;endis3()}">
+<option value="1">1 player</option>
+<option value="2">2 players</option>
+<option value="3">3 players</option>
 <!-- yc = document.forms.kb.yc.children[document.forms.kb.yc.selectedIndex].value -->
 </select>
 <script>

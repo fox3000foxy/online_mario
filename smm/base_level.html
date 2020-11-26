@@ -8,7 +8,7 @@
 <link href="Content/style.css" rel="stylesheet" />
 </head>
 
-<body contextmenu="mymenu" onunload="socket.emit('ready',you+':false')">
+<body>
 <!-- actions -->
 		<script>
 			if (location.href.indexOf('level=null')!=-1 || parseInt(location.href.split('level=')[1].split('&')[0]) > 15){location.href='index.html'}
@@ -18,20 +18,6 @@
 			peach_not = location.href.split('&peach')[1]!=""?location.href.split('&peach')[1]:""
 			sanspeach= location.href.split('&peach')[0] + peach_not
 		</script>
-		
-		
-		<!-- create the menu -->
-		<menu type="context" id="mymenu">
-		      <menuitem label="Replay ?" onclick="window.location.reload();" icon="tiles/box.png"></menuitem>
-		      <menu label="Add a player">
-		        <menuitem label="Luigi" icon="tiles/luigi.png" onclick="if (location.href.indexOf('&luigi') == -1){location.href= location.href.split('#')[0]+'&luigi#'+location.href= location.href.split('#')[1]}"></menuitem>
-		        <menuitem label="Peach" icon="tiles/peach.png" onclick="if (location.href.indexOf('&peach') == -1){location.href= location.href.split('#')[0]+'&peach#'+location.href= location.href.split('#')[1]}"></menuitem>
-			  </menu>
-		      <menu label="Remove a player">
-		        <menuitem label="Luigi" icon="tiles/luigi.png" onclick="if (location.href.indexOf('&luigi') != -1){location.href = sansluigi}"></menuitem>
-		        <menuitem label="Peach" icon="tiles/peach.png" onclick="if (location.href.indexOf('&peach') != -1){location.href= sanspeach}"></menuitem>
-			  </menu>
-		    </menu>
 <div id="game">
 <div id="world">
 <div id="finish" class="finish"></div>
