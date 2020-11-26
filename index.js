@@ -35,6 +35,7 @@ io.on('connection', (socket) => {
   socket.on('s1', (msg) => {io.emit('s1', msg);});
   socket.on('s2', (msg) => {io.emit('s2', msg);});
   socket.on('s3', (msg) => {io.emit('s3', msg);});
+  socket.on('chat', (msg) => {io.emit('chat', msg);});
   
   /*socket.on("ready" , (player) => {
       if(player=="1:true") {player1 = "ok",io.emit("player1","ok")}
@@ -109,6 +110,7 @@ heberg("/Scripts/oop.js")
 heberg("/Scripts/sounds.js")
 heberg("/Scripts/sounds_noop.js")
 heberg("/Scripts/trulyconstants.js")
+heberg("/Scripts/addchat.js")
 heberg("/base_level.html")
 heberg("/convert.html")
 heberg("/downloadcode.html")

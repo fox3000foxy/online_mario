@@ -74,10 +74,11 @@ function addPlayersEffect() {
 player2 = "luigi"
 player3 = "peach"
 salon= document.forms.kb.salon.value
+username= document.forms.kb.username.value
 yourrank = 1
-if (nb=="3") return "&salon="+salon+"&player="+yourrank+"&number="+nb+"&play="+yc+"&"+player2+"&"+player3
-if (nb=="2") return "&salon="+salon+"&player="+yourrank+"&number="+nb+"&play="+yc+"&"+player2
-if (nb=="1") return "&salon="+salon+"&player="+yourrank+"&number="+nb+"&play="+yc
+if (nb=="3") return "&username="+username+"&salon="+salon+"&player="+yourrank+"&number="+nb+"&play="+yc+"&"+player2+"&"+player3
+if (nb=="2") return "&username="+username+"&salon="+salon+"&player="+yourrank+"&number="+nb+"&play="+yc+"&"+player2
+if (nb=="1") return "&username="+username+"&salon="+salon+"&player="+yourrank+"&number="+nb+"&play="+yc
 return false
 }
 
@@ -101,6 +102,7 @@ Style : <select name="theselect" onchange="localStorage.setItem('attr',document.
 <option value="smb/">Super Mario Bros</option>
 </select><br><br>
 Room : <input name="salon" size=7><br>
+Name : <input name="username" size=7><br>
 <br>
 <select name="yc" onchange="console.log(this.selectedIndex);changeYC(this.selectedIndex);">
 <option value="" >--Choose--</option>

@@ -66,7 +66,8 @@ nhref += location.href.split("&lives="+after)[1].split("&")[0]
     	player = "&player="+location.href.split("&player=")[1].split("&")[0]
         salon= "&salon="+location.href.split("&salon=")[1].split("&")[0]
         play = "&play="+location.href.split("&play=")[1].split("&")[0]
-jref = nhref + "&coins="+numberCoin%100+player+salon+play
+        username = "&username="+location.href.split("&username=")[1].split("&")[0]
+jref = nhref + "&coins="+numberCoin%100+username+player+salon+play
 if (location.href.indexOf("&luigi")!=-1){jref += "&luigi"}
 if (location.href.indexOf("&peach")!=-1){jref += "&peach"}
 newhref = jref
@@ -78,7 +79,7 @@ if (document.getElementById('liveNumber').innerHTML < 1){
 if (location.href.indexOf("&luigi")!=-1){newhref += "&luigi"}
 if (location.href.indexOf("&peach")!=-1){newhref += "&peach"}
 
-        newhref += "&lives=4&coins=0"+player+salon+play
+        newhref += "&lives=4&coins=0"+username+player+salon+play
 	}
 	if(location.href.indexOf("editor=0")!=-1)
 		newhref = newhref.replace("editor=0","editor=3")
@@ -293,7 +294,8 @@ var Level = Base.extend({
 		player = "&player="+location.href.split("&player=")[1].split("&")[0]
         //number = "&number="+location.href.split("&number=")[1].split("&")[0]
         play = "&play="+location.href.split("&play=")[1].split("&")[0]
-		location.href = 'base_level.html?level='+numberlevel+luigi_oui+peach_oui+liveNumber_oui+coinNumber_oui+player+"&salon="+salon+play
+        username = "&username="+location.href.split("&username=")[1].split("&")[0]
+		location.href = 'base_level.html?level='+numberlevel+luigi_oui+peach_oui+liveNumber_oui+coinNumber_oui+username+player+"&salon="+salon+play
 		localStorage.setItem("editorfinish",true)
 		this.load(definedLevels[this.id + 1]);
 		
@@ -1533,7 +1535,7 @@ var w = 0
 			if(salon==num) s3 = msg.split("&")[1]
                 setTimeout("s3 = 0",30)
             })
-	
+	ley=0
 var Mario = Hero.extend({
 	init: function(x, y, level) {
         mario1 = x

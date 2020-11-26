@@ -17,6 +17,7 @@ if (peachctrl==true){cam=2}
 var socket = io()
     
 setInterval("if(cam==-1){cam=counterplayer-1}if(cam==counterplayer){cam=0}",100)
+ok=1
 var keys = {
 	bind : function() {
 		$(document).on('keydown', function(event) {	
@@ -51,6 +52,8 @@ var keys = {
 	},
 	handler : function(event, status, withkeypad,elsebutton) {
 	if(withkeypad){
+        if (ok==1 && document.activeElement==document.body){if(event.keyCode==13){document.getElementById('sender').focus();ok=0;setTimeout("ok=1",100);return}}
+        if (ok==1 && document.activeElement!=document.body){if(event.keyCode==13){document.getElementById("baton").click();document.body.focus();ok=0;setTimeout("ok=1",500)}return;}
         switch(event.keyCode) {
 			case 57392://CTRL on MAC
 			case 17://CTRL
@@ -100,6 +103,7 @@ var keys = {
  				break;
             case 'Y'.charCodeAt():/*CAMERA SWICTH*/ if (cam > 2){setTimeout('cam = 0',200);break;}else{setTimeout('cam += 0.5',200);break;}
 			case 'T'.charCodeAt():/*CAMERA SWICTH*/ if (cam < 0 ){setTimeout('cam = 2',200);break;}else{setTimeout('cam += -0.5',200);break;}
+            case 'U'.charCodeAt():break;
 			default:
 				return true;
 		}
