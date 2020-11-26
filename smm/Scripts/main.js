@@ -86,7 +86,7 @@ if (location.href.indexOf("&peach")!=-1){newhref += "&peach"}
 }
 
 adddeathplayer = 0
-setInterval("if(adddeathplayer == counterplayer){newlive();setTimeout('location.href=newhref',4500)}",100)
+setInterval("if(adddeathplayer == counterplayer){newlive();setTimeout('location.href=newhref',4500);}",100)
 		document.getElementById("finish").innerHTML ='<img id="finish_level" src="Content\/'+localStorage.getItem("attr")+'mario-finish.gif">'
 /*
  * -------------------------------------------

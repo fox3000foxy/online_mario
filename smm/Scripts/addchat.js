@@ -22,3 +22,11 @@
     {socket.emit("chat",salon+"&<b>"+username+":</b> "+message+"<br>")}
     document.getElementById('sender').value = ''
 }
+
+
+socket.emit("chat",salon+"&<b>"+username+" connect</b><br>")
+
+window.addEventListener("beforeunload", function (event) {
+socket.emit('chat',salon+'&<b>'+username+' disconnect</b><br>')
+//  event.preventDefault();
+});
