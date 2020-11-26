@@ -62,6 +62,8 @@ console.clear()
 app.get('/', (req, res) => {
   res.sendFile(__dirname + '/smm/index.html');
 });
+//  res.status(404).sendFile(__dirname + '/404.html');
+
 /*
 function heberg(attrib,src){
     cpsrc = __dirname + '/smm/'+attrib+src

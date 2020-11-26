@@ -1,0 +1,212 @@
+<!doctype html>
+<html>
+<head>
+<script src="/socket.io/socket.io.js"></script>
+<script src="jquery.js"></script>
+<meta charset=utf-8 />
+<title>Super Mario Maker Menu</title>
+<link href="Content/style.css" rel="stylesheet" />
+</head>
+<body>
+<div style="text-align:center;position:absolute;z-index:6004;width:75%;height:40% ;top:10%">
+<img src="Content/title.png" style="width:40%;height:75%;">
+</div>
+<div id="finish">
+
+</div>
+<script>
+document.getElementById('finish').style.visibility = 'hidden'
+if (localStorage.getItem("attr")==null)
+{
+localStorage.setItem("attr","smw/")
+localStorage.setItem("attrindex","0")
+}
+</script>
+<div id="game">
+<div id="world">
+</div>
+</div>
+<style>
+.menu
+{
+position:absolute;
+background:black;
+border: 1px solid black;
+border-radius : 3px;
+color:white;
+font-size:150%;
+text-align:center;
+width:30%
+}
+
+#play
+{
+position:absolute;
+top : 47%;
+left : 60%;
+font-size:100%;
+}
+*{
+font-size:100%
+}
+select{
+font-size:75%
+}
+</style>
+<script>
+window.onload = function() {
+		var fileInput = document.getElementById('fileInput');
+		var fileDisplayArea = document.getElementById('textbox');
+		fileInput.addEventListener('change', function(e) {
+			var file = fileInput.files[0];
+			var textType = /text.*/;
+				var reader = new FileReader();
+				reader.onload = function(e) {fileDisplayArea.innerText = reader.result;}
+                reader.readAsText(file);	
+                setTimeout("localStorage.setItem(\"level\",fileDisplayArea.innerText);window.location.href = 'menu.html?editor=3&lives=4&coins=0'",100)
+		});
+}
+
+yc = "none"
+nb = "1"
+
+function addPlayersEffect() {
+player2 = "luigi"
+player3 = "peach"
+salon= document.forms.kb.salon.value
+username= document.forms.kb.username.value
+yourrank = 1
+if (nb=="3") return "&username="+username+"&salon="+salon+"&player="+yourrank+"&number="+nb+"&play="+yc+"&"+player2+"&"+player3
+if (nb=="2") return "&username="+username+"&salon="+salon+"&player="+yourrank+"&number="+nb+"&play="+yc+"&"+player2
+if (nb=="1") return "&username="+username+"&salon="+salon+"&player="+yourrank+"&number="+nb+"&play="+yc
+return false
+}
+
+function changeYC(ind)
+{
+if(ind==1){yc = 'mario'}
+else if(ind==2){yc = 'luigi'}
+else if(ind==3){yc = 'peach'}
+}
+</script>
+<textarea id="textbox"></textarea>
+<input type="file" id="fileInput" style="display:none">
+<div id="play" style="width:75%">
+<button onclick="confirm('Ok : Custom level\nCancel: Basics levels')?window.location.href = 'menu.html?editor=0&lives=4&coins=0'+addPlayersEffect():window.location.href = 'base_level.html?level='+prompt('What level (number of (0 to 14)) ? ','0') + '&lives=4&coins=0'+addPlayersEffect()" class="menu">Play</button><br><br>
+<button onclick="window.location.href = 'menu2.html'" class="menu">Create</button><br><br>
+<button onclick='/*confirm("OK: By URL\nCancel:By file on your computer")?prompt("Url",""):*/fileInput.click()' class="menu">Level file</button><br><br>
+<form name="check" class="menu" id="kb"><br>
+<!-- <input type="range" min=1 max=3 value=1 name="yourrank"> -->
+Style : <select name="theselect" onchange="localStorage.setItem('attr',document.forms.kb.theselect.children[document.forms.kb.theselect.selectedIndex].value);localStorage.setItem('attrindex',document.forms.kb.theselect.selectedIndex);location.reload()">
+<option value="smw/">Super Mario World</option>
+<option value="smb/">Super Mario Bros</option>
+</select><br><br>
+Room : <input name="salon" size=7><br>
+Name : <input name="username" size=7><br>
+<br>
+<select name="yc" onchange="console.log(this.selectedIndex);changeYC(this.selectedIndex);">
+<option value="" >--Choose--</option>
+<option value="mario" id="yc1">Mario</option>
+<option value="luigi" id="yc2" disabled>Luigi</option>
+<option value="peach" id="yc3" disabled>Peach</option>
+<!-- yc = document.forms.kb.yc.children[document.forms.kb.yc.selectedIndex].value -->
+</select>
+<script>
+yc1 = document.getElementById("yc1")
+yc2 = document.getElementById("yc2")
+yc3 = document.getElementById("yc3")
+function endis1(){yc2.setAttribute("disabled","");yc3.setAttribute("disabled","")}
+function endis2(){yc2.removeAttribute("disabled");yc3.setAttribute("disabled","")}
+function endis3(){yc2.removeAttribute("disabled");yc3.removeAttribute("disabled")}
+</script>
+<select name="numberofplayers" onchange="if(this.selectedIndex==0){nb = this.options[0].value;endis1()};if(this.selectedIndex==1){nb = this.options[1].value;endis2()};if(this.selectedIndex==2){nb = this.options[2].value;endis3()}">
+<option value="1">1 player</option>
+<option value="2">2 players</option>
+<option value="3">3 players</option>
+<!-- yc = document.forms.kb.yc.children[document.forms.kb.yc.selectedIndex].value -->
+</select>
+<script>
+document.forms.kb.theselect.selectedIndex = localStorage.getItem('attrindex')?localStorage.getItem('attrindex'):0
+</script>
+<table><tr><td><input type="checkbox" name="checkbx" onclick="kbcookie(this.checked)"></td><td><div onclick="easteregg()">Have a keyboard</div></td></tr></table>
+</form>
+</div>
+<script>
+if(!document.cookie)
+    document.cookie = "kb=true;"
+
+function kbcookie(p)
+{
+document.cookie = "kb="+p+";"
+}
+
+</script>
+<script>
+if(document.cookie.split("kb=")[1].split(";")[0]=="true")
+    document.check.checkbx.checked=true
+
+function kbcookie(p)
+{
+document.cookie = "kb="+p+";"
+}
+</script>
+<script>window.jQuery || document.write('<script src="Scripts/jquery.js"><\/script>')</script>
+<!--<form name="choose">
+<input type="file" style="position:absolute;z-index:1000" onchange="chosen(this.value)" id="file">
+</form>
+<div>
+<script>
+function evenemet()
+{
+var evt = document.createEvent("MouseEvents");
+evt.initMouseEvent("click", true, true, window,0, 0, 0, 0, 0, false, false, false, false, 0, null);
+document.getElementById("file").dispatchEvent(evt);
+}
+//evenemet()
+function chosen(p)
+{
+document.write('lol')
+document.write('<script src="'+p+'"><\/script>')
+}
+</script>
+</div>-->
+<!-- CHOOSE ROM PATH -->
+<script src="Scripts/levels/menubackground.js"></script>
+
+<script src="Scripts/oop.js"></script>
+<script src="Scripts/constants.js"></script>
+<script src="Scripts/main.js"></script>
+<script src="Scripts/sounds.js"></script>
+<script src="Scripts/keys.js"></script>
+
+
+<!-- <div id="ester">
+</div>
+<script>
+
+
+easter = 0
+
+function easteregg()
+{
+easter +=1
+if(easter>4)
+{
+alert("Déplacez-vous !")
+document.getElementById("ester").innerHTML = '<script src="Scripts\/keys.js"><\/script>'
+}
+
+}
+
+
+</script> -->
+<!-- Game Musik -->
+<audio id="GameMusic" preload="auto" autoplay loop src="audio/music.ogg">
+</audio>
+
+<script>
+if (localStorage.getItem("attr")=="smb/")
+document.getElementById("GameMusic").src ="audio/Overworld.ogg"
+</script>
+</body>
+</html>
