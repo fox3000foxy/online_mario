@@ -4,22 +4,25 @@
   document.getElementById("game").appendChild(menu);
   var page ='';
   var username = location.href.split("&username=")[1].split("&")[0]
-  socket.on('chat', function(msg){
-      msga = msg.split("&")
+function commands(cmd)
+{
+    switch(cmd){
+        case "clear":menu.innerHTML="";break;
+    }
+}
+  socket.on('chat', function(msg){decrypt(msg)})
+      menu.innerHTML = "<br>"+page
+
+      function decrypt(msg){
+          msga = msg.split("&")
       if(msga[0]==salon)
       {
       page = msga[1]
-//       if(msga.length>=3){
-//           for(i=0;i<msga.length;i++)
-//           {
-//             page += "&"+msga[i]+"\n"
-//           }
-//     }
-      menu.innerHTML += "<br>"+page
+      menu.innerHTML += "<br>"+unescape(page)
+      if(msga[1].indexOf("!")!=-1) {commands(msga[1].split("!")[1].split("<br>")[0])}
       }
-})
-      menu.innerHTML = "<br>"+page
-
+    }
+      
   function send(){
     message = document.getElementById('sender').value
     document.getElementById('sender').value = ''
@@ -41,4 +44,10 @@ socket.emit('chat',salon+'&<b>'+username+' disconnect</b><br>')
   var inputtext="<input type='text' style='width:75%;position:absolute;left:0;bottom:0' id='sender'>"
   var inputsend="<button style='width:20%;position:absolute;left:80%;bottom:0;height:35px' id='baton' onclick='send()'>Send</button>"
     document.getElementById("game").appendChild(input);
+    function loadinputs(){
+        if(document.getElementById('sender')) {lavalue = document.getElementById('sender').value}
+  input.innerHTML = ""
   input.innerHTML = inputtext+inputsend
+         document.getElementById('sender').value = lavalue
+    }
+    loadinputs()

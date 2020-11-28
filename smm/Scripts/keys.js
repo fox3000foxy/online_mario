@@ -56,9 +56,9 @@ var keys = {
 	handler : function(event, status, withkeypad,elsebutton) {
 //         alert(event.keyCode)
 	if(withkeypad){
+        if(event.keyCode==27 && document.activeElement!=document.body){loadinputs()}
         if (ok==1 && document.activeElement==document.body){if(event.keyCode==13){document.getElementById('sender').focus();ok=0;setTimeout("ok=1",100);return}}
         if (ok==1 && document.activeElement!=document.body){if(event.keyCode==13){document.getElementById("baton").click();ok=0;setTimeout("ok=1",500)};return;}
-        if(event.keyCode==27 && document.activeElement!=document.body){document.body.focus()}
             if(event.keyCode=='Y'.charCodeAt())/*CAMERA SWICTH*/ if (cam > 2){setTimeout('cam = 0',200);}else{setTimeout('cam += 0.5',200)}
 			if(event.keyCode=='T'.charCodeAt())/*CAMERA SWICTH*/ if (cam < 0 ){setTimeout('cam = 2',200);}else{setTimeout('cam += -0.5',200)}
 //            if(event.keyCode=='P'.charCodeAt())if(marioctrl==true){pause();socket.emit("pause",start)}

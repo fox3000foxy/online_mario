@@ -57,4 +57,9 @@ else if (location.href.split("?editor=")[1].split("&")[0]=="2")
             var jsontable = localStorage.getItem("level")
         convertlevel()
     }
+        else if (location.href.split("?editor=")[1].split("&")[0]=="4")
+	{
+            var jsontable = localStorage.getItem("level")
+        convertlevel()
+    }
 document.write("<script>var definedLevels = [{data:"+result+"width: undefined,height: undefined,id: 0,background: "+bg+",x:"+x+",y:"+y+"}];try{for(n=0;n<definedLevels.length;n++){definedLevels[n].height = definedLevels[0].data[0].length + 1;definedLevels[n].width = definedLevels[0].data.length;}}catch(e){alert(e)};//alert(definedLevels)</script>")
