@@ -1,6 +1,14 @@
 ﻿<!doctype html>
 <html>
 <head>
+<script src="https://apis.google.com/js/platform.js" async defer></script>
+<div id="meta"></div>
+<script>
+if (location.href.indexOf("fox3000.jsannier.fr")==-1) 
+document.getElementById('meta').innerHTML = '<meta name="google-signin-client_id" content="895561298298-vvc005nfj3629k4b3q3ev0fpmru572kt.apps.googleusercontent.com">'
+else
+document.getElementById('meta').innerHTML = '<meta name="google-signin-client_id" content="895561298298-hd5najd7c3aep0jd40096tn8bqu6lu16.apps.googleusercontent.com">'
+</script>
 <script src="/socket.io/socket.io.js"></script>
 <script src="jquery.js"></script>
 <meta charset=utf-8 />
@@ -42,7 +50,7 @@ width:30%
 #play
 {
 position:absolute;
-top : 47%;
+top : 35%;
 left : 60%;
 font-size:100%;
 }
@@ -53,20 +61,19 @@ select{
 font-size:75%
 }
 </style>
+<textarea id="textbox"></textarea>
+<input type="file" id="fileInput" style="display:none">
 <script>
-window.onload = function() {
 		var fileInput = document.getElementById('fileInput');
 		var fileDisplayArea = document.getElementById('textbox');
 		fileInput.addEventListener('change', function(e) {
 			var file = fileInput.files[0];
 			var textType = /text.*/;
 				var reader = new FileReader();
-				reader.onload = function(e) {fileDisplayArea.innerText = reader.result;}
+				reader.onload = function(e) {fileDisplayArea.value = reader.result;}
                 reader.readAsText(file);	
-                setTimeout("localStorage.setItem(\"level\",fileDisplayArea.innerText);window.location.href = 'menu.html?editor=3&lives=4&coins=0'",100)
+                setTimeout("/*alert(fileDisplayArea.value);*/localStorage.setItem(\"level\",fileDisplayArea.value);window.location.href = 'menu.html?editor=3&lives=4&coins=0'+addPlayersEffect()",100)
 		});
-}
-
 yc = "none"
 nb = "1"
 
@@ -89,11 +96,10 @@ else if(ind==2){yc = 'luigi'}
 else if(ind==3){yc = 'peach'}
 }
 </script>
-<textarea id="textbox"></textarea>
-<input type="file" id="fileInput" style="display:none">
 <div id="play" style="width:75%">
+<button onclick="location.href='levels.html?'+addPlayersEffect()" class="menu">Levels</button><br><br>
 <button onclick="confirm('Ok : Custom level\nCancel: Basics levels')?window.location.href = 'menu.html?editor=0&lives=4&coins=0'+addPlayersEffect():window.location.href = 'base_level.html?level='+prompt('What level (number of (0 to 14)) ? ','0') + '&lives=4&coins=0'+addPlayersEffect()" class="menu">Play</button><br><br>
-<button onclick="window.location.href = 'menu2.html'" class="menu">Create</button><br><br>
+<button onclick="window.location.href = 'menu2.html?username'+document.forms.kb.username.value" class="menu">Create</button><br><br>
 <button onclick='/*confirm("OK: By URL\nCancel:By file on your computer")?prompt("Url",""):*/fileInput.click()' class="menu">Level file</button><br><br>
 <form name="check" class="menu" id="kb"><br>
 <!-- <input type="range" min=1 max=3 value=1 name="yourrank"> -->
@@ -129,6 +135,13 @@ function endis3(){yc2.removeAttribute("disabled");yc3.removeAttribute("disabled"
 document.forms.kb.theselect.selectedIndex = localStorage.getItem('attrindex')?localStorage.getItem('attrindex'):0
 </script>
 <table><tr><td><input type="checkbox" name="checkbx" onclick="kbcookie(this.checked)"></td><td><div onclick="easteregg()">Have a keyboard</div></td></tr></table>
+<br>
+
+<a onclick="signOut();" style="display:none;background:gray;border:1px solid darkgray;" id="signout">Sign out</a>
+<a onclick="document.getElementById('sign').firstChild.click()" style="background:gray;border:1px solid darkgray;width:100%" id="signin">Sign in with Google</a>
+<div style="display:none;background:gray;border:1px solid darkgray" class="g-signin2" data-onsuccess="onSignIn" id="sign">Sign in with Google</div>
+<script src="auth.js"></script>
+
 </form>
 </div>
 <script>

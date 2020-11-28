@@ -1,10 +1,21 @@
-<button onclick='download(localStorage.getItem("level"))'>Télécharger le code</button>
+<script src="/socket.io/socket.io.js"></script>
+<script src="jquery.js"></script>
+<button onclick='download(localStorage.getItem("level"))'>Download code</button>
+<button onclick='upload(localStorage.getItem("level"))'>Share</button>
 <script>
+socket = io()
       function download(b) {
     var fileName = prompt("Title","mylevel")+".smml";
     var pp = document.createElement('a');
     pp.setAttribute('href', 'data:text/plain;charset=utf-8,' + b);
     pp.setAttribute('download', fileName);
     pp.click();
+  }
+  
+  function upload(lelevel)
+  {
+  data = prompt("Title","My level")+" - "+unescape(parent.parent.location.href.split('username')[1])+"#"+lelevel
+//   alert(data)
+  socket.emit('level',data)
   }
 </script>
