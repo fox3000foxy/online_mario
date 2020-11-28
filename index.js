@@ -1,10 +1,41 @@
 var app = require('express')();
 var http = require('http').createServer(app);
 var io = require('socket.io')(http);
-const path = require('path');
-const fs = require('fs');
+var path = require('path');
+var fs = require('fs');
+hebergs = require('./hebergs')
+chatfile = "/chat.js"
+levelfile = "/Scripts/levels.js"
+function heberg(src){
+app.get(src, (req, res) => {res.sendFile(__dirname + '/smm'+src)})
+}    
+hebergs.hebergement()
 port = 8080
 
+function readchat(){
+fs.readFile("./smm"+chatfile, 'utf8', function (err,data) {
+salut = data;
+});
+}
+function chat(msg){
+readchat()
+if(msg.indexOf("!reset")!=-1) {setTimeout(function(){fs.writeFile("./smm"+chatfile, "", function (err) {});},20)}
+else setTimeout(function(){fs.writeFile("./smm"+chatfile, salut+"\n"+" decrypt(\""+ msg+"\")", function (err) {});},20)
+}
+
+function readlevel(){
+fs.readFile("./smm"+levelfile, 'utf8', function (err,data) {
+salut2 = data;/*
+console.log(salut2)*/
+});
+}
+function upload(msg){
+readlevel()
+msgg = msg.split("#")
+// console.log(msg)
+// console.log(msg)
+setTimeout(function(){fs.writeFile("./smm"+levelfile, salut2+"\n"+"levels[levels.length]={title:\""+msgg[0]+"\",data:\""+ msgg[1]+"\"}", function (err) {});},20)
+}
 io.on('connection', (socket) => {
   socket.on('mario1', (msg) => {io.emit('mario1', msg);});
   socket.on('mario2', (msg) => {io.emit('mario2', msg);});
@@ -35,24 +66,8 @@ io.on('connection', (socket) => {
   socket.on('s1', (msg) => {io.emit('s1', msg);});
   socket.on('s2', (msg) => {io.emit('s2', msg);});
   socket.on('s3', (msg) => {io.emit('s3', msg);});
-  socket.on('chat', (msg) => {io.emit('chat', msg);});
-  
-  /*socket.on("ready" , (player) => {
-      if(player=="1:true") {player1 = "ok",io.emit("player1","ok")}
-      if(player=="2:true") {player2 = "ok",io.emit("player2","ok")}
-      if(player=="2:true") {player3 = "ok",io.emit("player3","ok")}
-      if(player=="1:false") {player1 = "no",io.emit("player1","no")}
-      if(player=="2:false") {player2 = "no",io.emit("player2","no")}
-      if(player=="2:false") {player3 = "no",io.emit("player3","no")}
-      
-      if (player1 === "ok" && player2 === "ok" && player3 === "ok")
-      {
-          io.emit('go',true)    
-      }
-      console.log(player1)
-      console.log(player2)
-      console.log(player3)
-});*/
+  socket.on('chat', (msg) => {io.emit('chat', msg);chat(msg)});
+  socket.on('level', (msg) => {upload(msg)});
 });
 
 
@@ -62,44 +77,23 @@ console.clear()
 app.get('/', (req, res) => {
   res.sendFile(__dirname + '/smm/index.html');
 });
-//  res.status(404).sendFile(__dirname + '/404.html');
 
-/*
-function heberg(attrib,src){
-    cpsrc = __dirname + '/smm/'+attrib+src
-    thepath = '/'+attrib+src
-    console.log(cpsrc + " => " +thepath)
-app.get(thepath, (req, res) => {res.sendFile(cpsrc)})
-}
+http.listen(port, () => {
+//   console.log('listening on *:3000');
+});
 
-function hebergfolder(attr)
-{
-var directoryPath = path.join(__dirname, 'smm/'+attr);
-//console.log(directoryPath)
-fs.readdir(directoryPath, function (err, files) {for (i=0;i<files.length;i++){if (files[i].indexOf(".")!==-1) {heberg(directoryPath.split("smm/")[1],files[i])}}});
-}
 
-hebergfolder("")
-hebergfolder("Scripts/")
-hebergfolder("Scripts/levels/")
-hebergfolder("Content/")
-hebergfolder("Content/backgrounds/")
-hebergfolder("Content/fonts/")
-hebergfolder("Content/smb/")
-hebergfolder("Content/smb/backgrounds/")
-hebergfolder("Content/smw/")
-hebergfolder("Content/smw/backgrounds/")
-hebergfolder("audio/")
-hebergfolder("audio/theme/")
-hebergfolder("tiles/")
-*/
-
-function heberg(src){
-app.get(src, (req, res) => {res.sendFile(__dirname + '/smm'+src)})
-}
+io.on('connection', (socket) => {
+//   console.log('Ready player');
+  socket.on('disconnect', () => {
+//     console.log('Unready player');
+  });
+});
 
 heberg("jquery.js")
-
+heberg(chatfile)
+heberg(levelfile)
+heberg("/auth.js")
 heberg("/Scripts/astronautconstants.js")
 heberg("/Scripts/chaosconstants.js")
 heberg("/Scripts/constants.js")
@@ -252,19 +246,6 @@ heberg("/tiles/spikedturtle.png")
 heberg("/tiles/starbox.png")
 heberg("/tiles/staticplant.png")
 heberg("/tiles/stone.png")
-heberg("/tiles/tiles.png")
-
-
-http.listen(port, () => {
-//   console.log('listening on *:3000');
-});
-
-
-io.on('connection', (socket) => {
-  console.log('Ready player');
-  socket.on('disconnect', () => {
-    console.log('Unready player');
-  });
-});
-
-
+heberg("/tiles/tiles.png") 
+heberg("/levels.html") 
+heberg("/Scripts/levels.js") 
