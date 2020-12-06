@@ -92,27 +92,19 @@ var keys = {
 			return true
 		}
     else{
+        players=["mario","luigi","peach","orange","blue","cyan","indigo","dark","yellow","purple"]
+        playersletter=["","l","p","o","b","c","i","d","y","m"]
 				switch(elsebutton) {
                     case "fireball":
-						if (marioctrl==true){keys.accelerate = status;socket.emit("mario1",salon+"&"+status)}
-						if (luigictrl==true){keysl.accelerate = status;socket.emit("luigi1",salon+"&"+status)}
-						if (peachctrl==true){keysp.accelerate = status;socket.emit("peach1",salon+"&"+status)};break;
+                        for (i=0;i<players.length;i++){eval(`if (`+players[i]+`ctrl==true){keys`+playersletter[i]+`.accelerate = status;socket.emit("`+players[i]+`1",salon+"&"+status)}`)};break
                     case 'down':
-					if (marioctrl==true){keys.down = status;socket.emit("mario2",salon+"&"+status)};
-					if (luigictrl==true){keysl.down = status;socket.emit("luigi2",salon+"&"+status)};
-					if (peachctrl==true){keysp.down = status;socket.emit("peach2",salon+"&"+status)};break;
+                        for (i=0;i<players.length;i++){eval(`if (`+players[i]+`ctrl==true){keys`+playersletter[i]+`.down = status;socket.emit("`+players[i]+`2",salon+"&"+status)}`)};break
                     case 'right':
-						if (marioctrl==true){keys.right = status;socket.emit("mario3",salon+"&"+status)};
-						if (luigictrl==true){keysl.right = status;socket.emit("luigi3",salon+"&"+status)};
-						if (peachctrl==true){keysp.right = status;socket.emit("peach3",salon+"&"+status)};break;
+                        for (i=0;i<players.length;i++){eval(`if (`+players[i]+`ctrl==true){keys`+playersletter[i]+`.right = status;socket.emit("`+players[i]+`3",salon+"&"+status)}`)};break
                     case 'left':
-						if (marioctrl==true){keys.left = status;socket.emit("mario4",salon+"&"+status)};
-						if (luigictrl==true){keysl.left = status;socket.emit("luigi4",salon+"&"+status)};
-						if (peachctrl==true){keysp.left = status;socket.emit("peach4",salon+"&"+status)};break;
+                        for (i=0;i<players.length;i++){eval(`if (`+players[i]+`ctrl==true){keys`+playersletter[i]+`.left = status;socket.emit("`+players[i]+`4",salon+"&"+status)}`)};break
                     case 'up':
-						if (marioctrl==true){keys.up = status;socket.emit("mario5",salon+"&"+status)};
-						if (luigictrl==true){keysl.up = status;socket.emit("luigi5",salon+"&"+status)};
-						if (peachctrl==true){keysp.up = status;socket.emit("peach5",salon+"&"+status)};break;
+                        for (i=0;i<players.length;i++){eval(`if (`+players[i]+`ctrl==true){keys`+playersletter[i]+`.up = status;socket.emit("`+players[i]+`5",salon+"&"+status)}`)};break
 			default:
 				return true;
 		}
