@@ -3,14 +3,13 @@ var http = require('http').createServer(app);
 var io = require('socket.io')(http);
 var path = require('path');
 var fs = require('fs');
-hebergs = require('./hebergs')
 chatfile = "/chat.js"
 levelfile = "/Scripts/levels.js"
 function heberg(src){
 app.get(src, (req, res) => {res.sendFile(__dirname + '/smm'+src)})
 }    
-hebergs.hebergement()
-port = 8080
+//hebergs.hebergement()
+port = 8000
 
 function readchat(){
 fs.readFile("./smm"+chatfile, 'utf8', function (err,data) {
@@ -36,43 +35,42 @@ msgg = msg.split("#")
 // console.log(msg)
 setTimeout(function(){fs.writeFile("./smm"+levelfile, salut2+"\n"+"levels[levels.length]={title:\""+msgg[0]+"\",data:\""+ msgg[1]+"\"}", function (err) {});},20)
 }
+
+players=["mario","luigi","peach","orange","blue","cyan","indigo","dark","yellow","purple"]
+oneletterinstrutions = ""
+for (i=1;i<players.length+1;i++)
+{
+    oneletterinstrutions += " socket.on('c"+i+"', (msg) => {io.emit('c"+i+"', msg);});\n"
+    oneletterinstrutions += " socket.on('c"+i+"2', (msg) => {io.emit('c"+i+"2', msg);});\n"
+    oneletterinstrutions += " socket.on('d"+i+"', (msg) => {io.emit('d"+i+"', msg);});\n"
+    oneletterinstrutions += " socket.on('s"+i+"', (msg) => {io.emit('s"+i+"', msg);});\n"
+}
+
+moveinstructions=""
+for (i=0;i<players.length;i++)
+{
+    for (j=1;j<6;j++)
+    {
+        moveinstructions += "socket.on('"+players[i]+j+"', (msg) => {io.emit('"+players[i]+j+"', msg);});\n"
+//         console.log(players[i]+j)
+    }
+}
+
+instructions = moveinstructions+`
+  socket.on('pause', (msg) => {io.emit('pause', msg);});\n
+  socket.on('victory', (msg) => {io.emit('victory', msg);});\n`+oneletterinstrutions+`
+  socket.on('chat', (msg) => {io.emit('chat', msg);chat(msg)});\n
+  socket.on('level', (msg) => {upload(msg)});\n`
+
+
 io.on('connection', (socket) => {
-  socket.on('mario1', (msg) => {io.emit('mario1', msg);});
-  socket.on('mario2', (msg) => {io.emit('mario2', msg);});
-  socket.on('mario3', (msg) => {io.emit('mario3', msg);});
-  socket.on('mario4', (msg) => {io.emit('mario4', msg);});
-  socket.on('mario5', (msg) => {io.emit('mario5', msg);});
-  socket.on('luigi1', (msg) => {io.emit('luigi1', msg);});
-  socket.on('luigi2', (msg) => {io.emit('luigi2', msg);});
-  socket.on('luigi3', (msg) => {io.emit('luigi3', msg);});
-  socket.on('luigi4', (msg) => {io.emit('luigi4', msg);});
-  socket.on('luigi5', (msg) => {io.emit('luigi5', msg);});
-  socket.on('peach1', (msg) => {io.emit('peach1', msg);});
-  socket.on('peach2', (msg) => {io.emit('peach2', msg);});
-  socket.on('peach3', (msg) => {io.emit('peach3', msg);});
-  socket.on('peach4', (msg) => {io.emit('peach4', msg);});
-  socket.on('peach5', (msg) => {io.emit('peach5', msg);});
-  socket.on('pause', (msg) => {io.emit('pause', msg);});
-  socket.on('victory', (msg) => {io.emit('victory', msg);});
-  socket.on('d1', (msg) => {io.emit('d1', msg);});
-  socket.on('d2', (msg) => {io.emit('d2', msg);});
-  socket.on('d3', (msg) => {io.emit('d3', msg);});
-  socket.on('c1', (msg) => {io.emit('c1', msg);});
-  socket.on('c2', (msg) => {io.emit('c2', msg);});
-  socket.on('c3', (msg) => {io.emit('c3', msg);});
-  socket.on('c12', (msg) => {io.emit('c12', msg);});
-  socket.on('c22', (msg) => {io.emit('c22', msg);});
-  socket.on('c32', (msg) => {io.emit('c32', msg);});
-  socket.on('s1', (msg) => {io.emit('s1', msg);});
-  socket.on('s2', (msg) => {io.emit('s2', msg);});
-  socket.on('s3', (msg) => {io.emit('s3', msg);});
-  socket.on('chat', (msg) => {io.emit('chat', msg);chat(msg)});
-  socket.on('level', (msg) => {upload(msg)});
+  eval(instructions)
 });
 
 
 attr = ""
 console.clear()
+console.log(instructions)
 
 app.get('/', (req, res) => {
   res.sendFile(__dirname + '/smm/index.html');
@@ -107,6 +105,20 @@ heberg("/Scripts/sounds.js")
 heberg("/Scripts/sounds_noop.js")
 heberg("/Scripts/trulyconstants.js")
 heberg("/Scripts/addchat.js")
+heberg("/Scripts/init.js")
+heberg("/Scripts/baseclasses.js")
+heberg("/Scripts/launch.js")
+heberg("/Scripts/precode.js")
+heberg("/Scripts/players/mario.js")
+heberg("/Scripts/players/luigi.js")
+heberg("/Scripts/players/peach.js")
+heberg("/Scripts/players/orange.js")
+heberg("/Scripts/players/blue.js")
+heberg("/Scripts/players/cyan.js")
+heberg("/Scripts/players/dark.js")
+heberg("/Scripts/players/yellow.js")
+heberg("/Scripts/players/purple.js")
+heberg("/Scripts/players/indigo.js")
 heberg("/base_level.html")
 heberg("/convert.html")
 heberg("/downloadcode.html")
@@ -174,6 +186,22 @@ heberg("/Content/smw/peach-fire.png")
 heberg("/Content/smw/peach-sprites.png")
 heberg("/Content/smw/toad-fire.png")
 heberg("/Content/smw/toad-sprites.png")
+heberg("/Content/smw/orange-fire.png")
+heberg("/Content/smw/orange-sprites.png")
+heberg("/Content/smw/pink-fire.png")
+heberg("/Content/smw/pink-sprites.png")
+heberg("/Content/smw/gray-fire.png")
+heberg("/Content/smw/gray-sprites.png")
+heberg("/Content/smw/indigo-fire.png")
+heberg("/Content/smw/indigo-sprites.png")
+heberg("/Content/smw/cyan-fire.png")
+heberg("/Content/smw/cyan-sprites.png")
+heberg("/Content/smw/blue-fire.png")
+heberg("/Content/smw/blue-sprites.png")
+heberg("/Content/smw/yellow-fire.png")
+heberg("/Content/smw/yellow-sprites.png")
+heberg("/Content/smw/purple-fire.png")
+heberg("/Content/smw/purple-sprites.png")
 heberg("/Content/smw/backgrounds/01.png")
 heberg("/Content/smw/backgrounds/02.png")
 heberg("/Content/smw/backgrounds/03.png")
