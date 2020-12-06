@@ -113,8 +113,15 @@ Name : <input name="username" size=7><br>
 <select name="yc" onchange="console.log(this.selectedIndex);changeYC(this.selectedIndex);">
 <option value="" >--Choose--</option>
 <option value="mario" id="yc1">Mario</option>
-<option value="luigi" id="yc2" disabled>Luigi</option>
-<option value="peach" id="yc3" disabled>Peach</option>
+<option value="luigi" id="yc2">Luigi</option>
+<option value="peach" id="yc3">Peach</option>
+<option value="orange" id="yc4">Orange</option>
+<option value="blue" id="yc5">Blue</option>
+<option value="cyan" id="yc6">Cyan</option>
+<option value="indigo" id="yc7">Indigo</option>
+<option value="dark" id="yc8">Dark</option>
+<option value="yellow" id="yc9">Yellow</option>
+<option value="purple" id="yc10">Purple</option>
 <!-- yc = document.forms.kb.yc.children[document.forms.kb.yc.selectedIndex].value -->
 </select>
 <script>
@@ -125,13 +132,13 @@ function endis1(){yc2.setAttribute("disabled","");yc3.setAttribute("disabled",""
 function endis2(){yc2.removeAttribute("disabled");yc3.setAttribute("disabled","")}
 function endis3(){yc2.removeAttribute("disabled");yc3.removeAttribute("disabled")}
 </script>
-<select name="numberofplayers" onchange="if(this.selectedIndex==0){nb = this.options[0].value;endis1()};if(this.selectedIndex==2){nb = this.options[2].value;endis2()};if(this.selectedIndex==3){nb = this.options[3].value;endis3()}">
-	<option value="0"> ? players</option>
-	<option value="1">1 player</option>
+<!-- <select name="numberofplayers" onchange="if(this.selectedIndex==0){nb = this.options[0].value;endis1()};if(this.selectedIndex==2){nb = this.options[2].value;endis2()};if(this.selectedIndex==3){nb = this.options[3].value;endis3()}">
+<option value="0"> ? players</option>
+<option value="1">1 player</option>
 <option value="2">2 players</option>
-<option value="3">3 players</option>
+<option value="3">3 players</option>-->
 <!-- yc = document.forms.kb.yc.children[document.forms.kb.yc.selectedIndex].value -->
-</select>
+<!-- </select> -->
 <script>
 document.forms.kb.theselect.selectedIndex = localStorage.getItem('attrindex')?localStorage.getItem('attrindex'):0
 </script>
@@ -141,8 +148,8 @@ document.forms.kb.theselect.selectedIndex = localStorage.getItem('attrindex')?lo
 <a onclick="signOut();" style="display:none;background:gray;border:1px solid darkgray;" id="signout">Sign out</a>
 <a onclick="document.getElementById('sign').firstChild.click()" style="background:gray;border:1px solid darkgray;width:100%" id="signin">Sign in with Google</a>
 <div style="display:none;background:gray;border:1px solid darkgray" class="g-signin2" data-onsuccess="onSignIn" id="sign">Sign in with Google</div>
-<script src="auth.js"></script>
-<a id="login" href="https://discord.com/api/oauth2/authorize?client_id=784343852445466634&redirect_uri=http%3A%2F%2Ffox3000.jsannier.fr&response_type=code&scope=identify">Identify Yourself</a>
+<script src="auth.js"></script><br><br>
+<!-- <a id="login" href="https://discord.com/api/oauth2/authorize?client_id=784343852445466634&redirect_uri=http%3A%2F%2Ffox3000.jsannier.fr&response_type=code&scope=identify">Identify Yourself</a> -->
 
 </form>
 </div>
