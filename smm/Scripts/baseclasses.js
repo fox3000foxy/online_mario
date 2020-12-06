@@ -179,7 +179,7 @@ var Level = Base.extend({
                         new (reflection["yellow"])(i * 32, (height - j - 1) * 32, this);
                         new (reflection["purple"])(i * 32, (height - j - 1) * 32, this);
                     }
-                    if(col[j]!="ballmonster")
+                    if(col[j]!="peach"||col[j]!="luigi")
                     new (reflection[col[j]])(i * 32, (height - j - 1) * 32, this);
                 }
 			}
