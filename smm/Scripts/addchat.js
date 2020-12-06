@@ -4,10 +4,15 @@
   document.getElementById("game").appendChild(menu);
   var page ='';
   var username = location.href.split("&username=")[1].split("&")[0]
-function commands(cmd)
+function commands(user,cmd)
 {
     switch(cmd){
-        case "clear":menu.innerHTML="";break;
+      case "clear":menu.innerHTML="";break;
+      case "marseille":menu.innerHTML+="<br><b>"+user+"</b>" +" is for Marseille<br>";break;
+      case "happy":menu.innerHTML+="<br><b>"+user+"</b>" +" is happy <img style='width:32px;height:32px' src='https://as1.ftcdn.net/jpg/01/42/89/16/500_F_142891654_fAtXH5vro91F1TynMjQ3RHfXXMXhqR2M.jpg'><br>";break;
+      case "sad":menu.innerHTML+="<br><b>"+user+"</b>" +" is sad <img style='width:32px;height:32px' src='https://webstockreview.net/images/emoji-clipart-sadness-16.png'><br>";break;
+      case "enjoy":menu.innerHTML+="<br><b>"+user+"</b>" +" is enjoy<br>";break;
+      default : menu.innerHTML+="<br><b>"+user+"</b>" +" try command \"!"+cmd+"\"<br>";break;
     }
 }
   socket.on('chat', function(msg){decrypt(msg)})
@@ -18,8 +23,8 @@ function commands(cmd)
       if(msga[0]==salon)
       {
       page = msga[1]
-      menu.innerHTML += "<br>"+unescape(page)
-      if(msga[1].indexOf("!")!=-1) {commands(msga[1].split("!")[1].split("<br>")[0])}
+      if(msga[1].indexOf("!")!=-1) {commands(msg.split("<b>")[1].split(":</b>")[0],msga[1].split("!")[1].split("<br>")[0])}
+      else menu.innerHTML += "<br>"+unescape(page)
       }
     }
       

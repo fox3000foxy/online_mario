@@ -8,20 +8,9 @@
  levelnumber = location.href.indexOf("base_level") != -1?parseInt(location.href.split("level=")[1]):0
 var counterplayer = 0
 for (i=0;i<definedLevels[levelnumber].data.length-1;i++){
-
-if (definedLevels[levelnumber].data[i].indexOf('mario')!=-1)
-{
-	counterplayer += 1
-}
-
-if (definedLevels[levelnumber].data[i].indexOf('luigi')!=-1)
-{
-	counterplayer += 1
-}
-if (definedLevels[levelnumber].data[i].indexOf('peach')!=-1)
-{
-	counterplayer += 1
-}
+if (definedLevels[levelnumber].data[i].indexOf('mario')!=-1){counterplayer += 1}
+if (definedLevels[levelnumber].data[i].indexOf('luigi')!=-1){counterplayer += 1}
+if (definedLevels[levelnumber].data[i].indexOf('peach')!=-1){counterplayer += 1}
 }
 var attr = localStorage.getItem('attr')
 var AUDIOPATH = 'Content/audio/';
@@ -31,12 +20,16 @@ var CLS_FIGURE = 'figure';
 var CLS_MATTER = 'matter';
  var images = {
 	// sprites : BASEPATH + counterplayer!=1?'mario-sprites.png':confirm("OK:Mario\nCancel:Luigi")==true?'mario-sprites.png':"luigi-sprites.png",
-	sprites : BASEPATH + 'mario-sprites.png',
-	spritesf : BASEPATH + 'mario-fire.png',
-	spritesl: BASEPATH + "luigi-sprites.png",
-	spriteslf: BASEPATH + "luigi-fire.png",
-	spritesp: BASEPATH + "peach-sprites.png",
-	spritespf: BASEPATH + "peach-fire.png",
+	sprites : BASEPATH + 'mario-sprites.png',spritesf : BASEPATH + 'mario-fire.png',
+	spritesl: BASEPATH + "luigi-sprites.png",spriteslf: BASEPATH + "luigi-fire.png",
+	spritesp: BASEPATH + "pink-sprites.png",spritespf: BASEPATH + "pink-fire.png",
+	spriteso: BASEPATH + "orange-sprites.png",spritesof: BASEPATH + "orange-fire.png",
+	spritesb: BASEPATH + "blue-sprites.png",spritesbf: BASEPATH + "blue-fire.png",
+	spritesc: BASEPATH + "cyan-sprites.png",spritescf: BASEPATH + "cyan-fire.png",
+	spritesi: BASEPATH + "indigo-sprites.png",spritesif: BASEPATH + "indigo-fire.png",
+	spritesd: BASEPATH + "gray-sprites.png",spritesdf: BASEPATH + "gray-fire.png",
+	spritesy: BASEPATH + "yellow-sprites.png",spritesyf: BASEPATH + "yellow-fire.png",
+	spritesm: BASEPATH + "purple-sprites.png",spritesmf: BASEPATH + "purple-fire.png",
 	enemies : BASEPATH + 'mario-enemies.png',
 	objects : BASEPATH + 'mario-objects.png',
 	peach   : BASEPATH + 'mario-peach.png',
@@ -49,18 +42,16 @@ var directions = {
 	right : 3,
 	down  : 4,
 };
-var mario_states = {
-	normal : 0,
-	fire  : 1,
-};
-var luigi_states = {
-	normal : 0,
-	fire  : 1,
-};
-var peach_states = {
-	normal : 0,
-	fire  : 1,
-};
+var mario_states = {normal : 0,fire  : 1,};
+var luigi_states = {normal : 0,fire  : 1,};
+var peach_states = {normal : 0,fire  : 1,};
+var orange_states = {normal : 0,fire  : 1,};
+var blue_states = {normal : 0,fire  : 1,};
+var cyan_states = {normal : 0,fire  : 1,};
+var indigo_states = {normal : 0,fire  : 1,};
+var dark_states = {normal : 0,fire  : 1,};
+var yellow_states = {normal : 0,fire  : 1,};
+var purple_states = {normal : 0,fire  : 1,};
 var size_states = {
 	small : 1,
 	big   : 2,
@@ -110,18 +101,16 @@ var constants = {
 	invulnerable    : 1000,
 	blinkfactor     : 5,
 };
-var mushroom_mode = {
-	mushroom : 0,
-	plant    : 1,
-};
-var mushroom_luigi_mode = {
-	mushroom : 0,
-	plant    : 1,
-};
-var mushroom_peach_mode = {
-	mushroom : 0,
-	plant    : 1,
-};
+var mushroom_mode = {mushroom : 0,plant: 1,};
+var mushroom_luigi_mode = {mushroom : 0,plant: 1,};
+var mushroom_peach_mode = {mushroom : 0,plant: 1,};
+var mushroom_orange_mode = {mushroom : 0,plant: 1,};
+var mushroom_blue_mode = {mushroom : 0,plant: 1,};
+var mushroom_cyan_mode = {mushroom : 0,plant: 1,};
+var mushroom_indigo_mode = {mushroom : 0,plant: 1,};
+var mushroom_dark_mode = {mushroom : 0,plant: 1,};
+var mushroom_yellow_mode = {mushroom : 0,plant: 1,};
+var mushroom_purple_mode = {mushroom : 0,plant: 1,};
 var c2u = function(s) {
 	return 'url(' + s + ')';
 };

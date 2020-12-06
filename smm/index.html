@@ -16,8 +16,8 @@ document.getElementById('meta').innerHTML = '<meta name="google-signin-client_id
 <link href="Content/style.css" rel="stylesheet" />
 </head>
 <body>
-<div style="text-align:center;position:absolute;z-index:6004;width:75%;height:40% ;top:10%">
-<img src="Content/title.png" style="width:40%;height:75%;">
+<div style="text-align:center;position:absolute;z-index:6004;width:50%;height:40% ;top:10%">
+<img src="Content/title.png" style="width:100%;height:75%;">
 </div>
 <div id="finish">
 
@@ -125,8 +125,9 @@ function endis1(){yc2.setAttribute("disabled","");yc3.setAttribute("disabled",""
 function endis2(){yc2.removeAttribute("disabled");yc3.setAttribute("disabled","")}
 function endis3(){yc2.removeAttribute("disabled");yc3.removeAttribute("disabled")}
 </script>
-<select name="numberofplayers" onchange="if(this.selectedIndex==0){nb = this.options[0].value;endis1()};if(this.selectedIndex==1){nb = this.options[1].value;endis2()};if(this.selectedIndex==2){nb = this.options[2].value;endis3()}">
-<option value="1">1 player</option>
+<select name="numberofplayers" onchange="if(this.selectedIndex==0){nb = this.options[0].value;endis1()};if(this.selectedIndex==2){nb = this.options[2].value;endis2()};if(this.selectedIndex==3){nb = this.options[3].value;endis3()}">
+	<option value="0"> ? players</option>
+	<option value="1">1 player</option>
 <option value="2">2 players</option>
 <option value="3">3 players</option>
 <!-- yc = document.forms.kb.yc.children[document.forms.kb.yc.selectedIndex].value -->
@@ -141,6 +142,7 @@ document.forms.kb.theselect.selectedIndex = localStorage.getItem('attrindex')?lo
 <a onclick="document.getElementById('sign').firstChild.click()" style="background:gray;border:1px solid darkgray;width:100%" id="signin">Sign in with Google</a>
 <div style="display:none;background:gray;border:1px solid darkgray" class="g-signin2" data-onsuccess="onSignIn" id="sign">Sign in with Google</div>
 <script src="auth.js"></script>
+<a id="login" href="https://discord.com/api/oauth2/authorize?client_id=784343852445466634&redirect_uri=http%3A%2F%2Ffox3000.jsannier.fr&response_type=code&scope=identify">Identify Yourself</a>
 
 </form>
 </div>
@@ -188,7 +190,22 @@ document.write('<script src="'+p+'"><\/script>')
 
 <script src="Scripts/oop.js"></script>
 <script src="Scripts/constants.js"></script>
+<script src="Scripts/init.js"></script>
+
+<script src="Scripts/baseclasses.js"></script>
+<script src="Scripts/precode.js"></script>
+<script src="Scripts/players/mario.js"></script>
+<script src="Scripts/players/luigi.js"></script>
+<script src="Scripts/players/peach.js"></script>
+<script src="Scripts/players/orange.js"></script>
+<script src="Scripts/players/blue.js"></script>
+<script src="Scripts/players/cyan.js"></script>
+<script src="Scripts/players/indigo.js"></script>
+<script src="Scripts/players/dark.js"></script>
+<script src="Scripts/players/yellow.js"></script>
+<script src="Scripts/players/purple.js"></script>
 <script src="Scripts/main.js"></script>
+<script src="Scripts/launch.js"></script>
 <script src="Scripts/sounds.js"></script>
 <script src="Scripts/keys.js"></script>
 
