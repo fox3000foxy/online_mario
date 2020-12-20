@@ -11,7 +11,7 @@ Find the link on https://github.com/zhouchangxun/superMario
   * npm install fs
   * npm inntall http<br>
   or
-  ** npm install
+  * npm install
   
  and
   * node index.js
