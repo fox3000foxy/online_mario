@@ -9,9 +9,9 @@ Find the link on https://github.com/zhouchangxun/superMario
   * npm install express
   * npm install path
   * npm install fs
-  * npm inntall http
+  * npm inntall http<br>
   or
-  * npm install
+  ** npm install
   
  and
   * node index.js
